@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from src.infrastructure.database.database import Base, engine
-from src.domain.entitites.cat import Cat
 from src.infrastructure.api.routes.routes import router
 
 
