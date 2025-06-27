@@ -1,4 +1,3 @@
-import json
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from logging_config import setup_logger
@@ -7,19 +6,17 @@ logger = setup_logger()
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        # Request data
         ip = request.client.host
         method = request.method
         path = request.url.path
         user_agent = request.headers.get('user-agent', '')
+        request_id = request.headers.get('X-Request-ID', '')
 
         try:
             body_bytes = await request.body()
             body = body_bytes.decode('utf-8')
         except Exception:
             body = ""
-
-        request_id = request.headers.get('X-Request-ID', '')
 
         logger.info(
             "Incoming request",

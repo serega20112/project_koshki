@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from src.infrastructure.database.database import Base, engine
 from src.infrastructure.api.routes.routes import router
-from middleware_logging import LoggingMiddleware
+from src.for_logs.middleware_logging import LoggingMiddleware
 
 
 
