@@ -1,7 +1,7 @@
 filebeat.inputs:
   - type: log
     paths:
-      - /path/to/your/project_koshki/logs/app.log
+      C:/Users/Admin/project_koshki/logs/app.log
     json.keys_under_root: true
     json.add_error_key: true
 
