@@ -1,0 +1,10 @@
+filebeat.inputs:
+  - type: log
+    paths:
+      - /path/to/your/project_koshki/logs/app.log
+    json.keys_under_root: true
+    json.add_error_key: true
+
+output.elasticsearch:
+  hosts: ["http://localhost:9200"]
+  index: "koshki-logs-%{+yyyy.MM.dd}"
