@@ -1,9 +1,19 @@
 class AppError(Exception):
-    """Базовый класс для всех ошибок приложения"""
     def __init__(self, message: str = "Ошибка в приложении", details: dict = None):
         self.message = message
         self.details = details or {}
+        self.ErrClass = "UnknownClass"
+        self.ErrMethod = "unknown_method"
         super().__init__(self.message)
+
+    def set_context(self, err_class: str, err_method: str):
+        self.ErrClass = err_class
+        self.ErrMethod = err_method
+        return self
+
+    def __str__(self):
+        return f"[{self.__class__.__name__}] {self.message}"
+
 
     def __str__(self):
         return f"[{self.__class__.__name__}] {self.message}"

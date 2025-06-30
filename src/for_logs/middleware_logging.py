@@ -24,27 +24,49 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
         try:
             response = await call_next(request)
-        except AppError as e:
-            error_type = e.__class__.__name__
-            app_logger.warning(
+
+            status_code = response.status_code
+            app_logger.info(
                 logger_class="LoggingMiddleware",
-                event=error_type,
-                message=str(e),
-                summary=f"Ошибка {error_type}: {e.message}",
+                event="OutgoingResponse",
+                message="Sent HTTP response",
                 params={
-                    "error_type": error_type,
-                    "error_message": e.message,
-                    "error_details": e.details,
-                    "method": request.method,
-                    "path": request.url.path,
+                    "status_code": status_code,
+                    "headers": dict(response.headers),
                     "action": request.method,
-                    "result": 500 if not isinstance(e, NotFoundError) else 404
+                    "result": status_code
                 }
             )
+
+            if 500 <= status_code < 600:
+                app_logger.warning(
+                    logger_class="LoggingMiddleware",
+                    event="ServerErrorDetected",
+                    message=f"Server error response sent: {status_code}",
+                    summary=f"Ошибка на уровне сервера: код {status_code}",
+                    params={
+                        "status_code": status_code,
+                        "method": request.method,
+                        "path": request.url.path,
+                        "action": request.method,
+                        "result": status_code
+                    },
+                    ErrClass="Request",
+                    ErrMethod="dispatch"
+                )
+
+            return response
+
+        except AppError as e:
+            status_code = 404 if isinstance(e, NotFoundError) else 500
+
             response = JSONResponse(
-                status_code=500 if not isinstance(e, NotFoundError) else 404,
-                content={"error": error_type, "message": e.message, "details": e.details}
+                status_code=status_code,
+                content={"error": e.__class__.__name__, "message": e.message, "details": e.details}
             )
+
+            return response
+
         except Exception as e:
             app_logger.warning(
                 logger_class="LoggingMiddleware",
@@ -58,35 +80,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                     "path": request.url.path,
                     "action": request.method,
                     "result": 500
-                }
+                },
+                ErrClass="UnknownClass",
+                ErrMethod="UnknownMethod"
             )
-            response = Response(content="Internal Server Error", status_code=500)
-
-        status_code = response.status_code
-        app_logger.info(
-            logger_class="LoggingMiddleware",
-            event="OutgoingResponse",
-            message="Sent HTTP response",
-            params={
-                "status_code": status_code,
-                "headers": dict(response.headers),
-                "action": request.method,
-                "result": status_code
-            }
-        )
-
-        if 500 <= status_code < 600:
-            app_logger.warning(
-                logger_class="LoggingMiddleware",
-                event="ServerErrorDetected",
-                message=f"Server error response sent: {status_code}",
-                params={
-                    "status_code": status_code,
-                    "method": request.method,
-                    "path": request.url.path,
-                    "action": request.method,
-                    "result": status_code
-                }
-            )
-
-        return response
+            return Response(content="Internal Server Error", status_code=500)
