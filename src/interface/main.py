@@ -13,4 +13,5 @@ app.add_middleware(LoggingMiddleware)
 
 Base.metadata.create_all(bind=engine)
 
-print("Done")
+print(f"Done.\n"
+      "Logs are recording")

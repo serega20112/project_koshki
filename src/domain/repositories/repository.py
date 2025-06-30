@@ -28,5 +28,5 @@ class AbstractCatRepository(ABC):
         ...
     
     @abstractmethod
-    def add_breed() -> dict:
+    def add_breed(self) -> dict:
         ...
