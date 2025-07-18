@@ -2,9 +2,8 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-
 class CatDTO(BaseModel):
-    id:int
+    id: int
     name: str
     age: int
     color: str
@@ -12,7 +11,7 @@ class CatDTO(BaseModel):
     breed_id: int
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
 
 
 class BreedDTO(BaseModel):
@@ -20,4 +19,4 @@ class BreedDTO(BaseModel):
     breed_id: int
 
     class Config:
-        from_attributes = True 
+        from_attributes = True

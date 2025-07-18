@@ -47,15 +47,17 @@ class AppLogger:
             console_handler.setFormatter(formatter)
             self.logger.addHandler(console_handler)
 
-    def _make_log_entry(self,
-                        level,
-                        logger_class,
-                        event,
-                        message,
-                        params=None,
-                        summary=None,
-                        ErrClass=None,
-                        ErrMethod=None):
+    def _make_log_entry(
+        self,
+        level,
+        logger_class,
+        event,
+        message,
+        params=None,
+        summary=None,
+        ErrClass=None,
+        ErrMethod=None,
+    ):
         if ErrClass is None or ErrMethod is None:
             frame = inspect.currentframe()
             try:
@@ -85,7 +87,7 @@ class AppLogger:
             "summary": summary or "No summary provided",
             "ErrClass": class_name,
             "ErrMethod": method_name,
-            "params": safe_params
+            "params": safe_params,
         }
 
         return {

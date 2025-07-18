@@ -23,22 +23,20 @@ class RabbitMQPublisher(AbstractEventPublisher):
             parameters = pika.ConnectionParameters(
                 host=rabbitmq_settings.host,
                 port=rabbitmq_settings.port,
-                virtual_host='/',
-                credentials=credentials
+                virtual_host="/",
+                credentials=credentials,
             )
             self.connection = pika.BlockingConnection(parameters)
             self.channel = self.connection.channel()
             # Объявляем exchange, если его нет
             self.channel.exchange_declare(
-                exchange=self.exchange,
-                exchange_type='topic',
-                durable=True
+                exchange=self.exchange, exchange_type="topic", durable=True
             )
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="RabbitMQConnected",
                 message="Successfully connected to RabbitMQ",
-                summary="RabbitMQ connection established"
+                summary="RabbitMQ connection established",
             )
         except Exception as e:
             app_logger.error(
@@ -47,7 +45,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 message=str(e),
                 summary=f"Failed to connect to RabbitMQ: {str(e)}",
                 ErrClass=self.__class__.__name__,
-                ErrMethod="connect"
+                ErrMethod="connect",
             )
             print(e)
             raise AppError(f"Failed to connect to RabbitMQ: {e}").set_context(
@@ -62,7 +60,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                     logger_class=self.__class__.__name__,
                     event="RabbitMQDisconnected",
                     message="Disconnected from RabbitMQ",
-                    summary="RabbitMQ connection closed"
+                    summary="RabbitMQ connection closed",
                 )
         except Exception as e:
             app_logger.error(
@@ -71,7 +69,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 message=str(e),
                 summary=f"Error disconnecting from RabbitMQ: {str(e)}",
                 ErrClass=self.__class__.__name__,
-                ErrMethod="disconnect"
+                ErrMethod="disconnect",
             )
             print(e)
 
@@ -84,7 +82,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 exchange=self.exchange,
                 routing_key=routing_key,
                 body=message_body,
-                properties=pika.BasicProperties(content_type="application/json")
+                properties=pika.BasicProperties(content_type="application/json"),
             )
             app_logger.info(
                 logger_class=self.__class__.__name__,
@@ -94,8 +92,8 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 params={
                     "event_type": event.__class__.__name__,
                     "routing_key": routing_key,
-                    "event_data": event.to_dict()
-                }
+                    "event_data": event.to_dict(),
+                },
             )
 
         except Exception as e:
@@ -106,10 +104,10 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 summary=f"Failed to publish event: {str(e)}",
                 params={
                     "event_type": event.__class__.__name__,
-                    "routing_key": routing_key
+                    "routing_key": routing_key,
                 },
                 ErrClass=self.__class__.__name__,
-                ErrMethod="publish"
+                ErrMethod="publish",
             )
             print(e)
             raise AppError(f"Failed to publish event: {e}").set_context(

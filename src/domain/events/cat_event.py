@@ -19,7 +19,7 @@ class CatCreatedEvent:
             name=cat_dto.name,
             age=cat_dto.age,
             breed_id=cat_dto.breed_id,
-            created_at=datetime.utcnow()
+            created_at=datetime.utcnow(),
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -30,7 +30,7 @@ class CatCreatedEvent:
             "age": self.age,
             "breed_id": self.breed_id,
             "created_at": self.created_at.isoformat(),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat(),
         }
 
 
@@ -49,7 +49,7 @@ class CatUpdatedEvent:
             name=cat_dto.name,
             age=cat_dto.age,
             breed_id=cat_dto.breed_id,
-            updated_at=datetime.utcnow()
+            updated_at=datetime.utcnow(),
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -60,7 +60,7 @@ class CatUpdatedEvent:
             "age": self.age,
             "breed_id": self.breed_id,
             "updated_at": self.updated_at.isoformat(),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat(),
         }
 
 
@@ -74,5 +74,5 @@ class CatDeletedEvent:
             "event_type": "cat.deleted",
             "cat_id": self.cat_id,
             "deleted_at": self.deleted_at.isoformat(),
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat(),
         }

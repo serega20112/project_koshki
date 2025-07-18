@@ -1,7 +1,12 @@
 from functools import wraps
 from fastapi import HTTPException
 
-from src.application.exceptions.exceptions import AppError, NotFoundError, ValidationError, DatabaseError
+from src.application.exceptions.exceptions import (
+    AppError,
+    NotFoundError,
+    ValidationError,
+    DatabaseError,
+)
 from src.for_logs.logging_config import setup_logger
 
 app_logger = setup_logger()
@@ -17,7 +22,7 @@ def log_service(func):
             logger_class="Route",
             event=func.__name__,
             message=f"Вызов метода {func.__name__}",
-            params={"kwargs": kwargs}
+            params={"kwargs": kwargs},
         )
 
         try:
@@ -38,34 +43,42 @@ def log_service(func):
                     "error_type": e.__class__.__name__,
                     "error_message": str(e),
                     "args": args,
-                    "kwargs": kwargs
+                    "kwargs": kwargs,
                 },
                 ErrClass=err_class,
-                ErrMethod=err_method
+                ErrMethod=err_method,
             )
 
             if isinstance(e, NotFoundError):
-                raise HTTPException(status_code=404, detail={
-                    "error": "NotFoundError",
-                    "message": str(e),
-                    "details": getattr(e, "details", {})
-                })
+                raise HTTPException(
+                    status_code=404,
+                    detail={
+                        "error": "NotFoundError",
+                        "message": str(e),
+                        "details": getattr(e, "details", {}),
+                    },
+                )
             elif isinstance(e, ValidationError):
-                raise HTTPException(status_code=422, detail={
-                    "error": "ValidationError",
-                    "message": str(e),
-                    "details": getattr(e, "details", {})
-                })
+                raise HTTPException(
+                    status_code=422,
+                    detail={
+                        "error": "ValidationError",
+                        "message": str(e),
+                        "details": getattr(e, "details", {}),
+                    },
+                )
             elif isinstance(e, DatabaseError):
-                raise HTTPException(status_code=503, detail={
-                    "error": "DatabaseError",
-                    "message": str(e),
-                    "details": getattr(e, "details", {})
-                })
+                raise HTTPException(
+                    status_code=503,
+                    detail={
+                        "error": "DatabaseError",
+                        "message": str(e),
+                        "details": getattr(e, "details", {}),
+                    },
+                )
             else:
-                raise HTTPException(status_code=500, detail={
-                    "error": "ServerError",
-                    "message": str(e)
-                })
+                raise HTTPException(
+                    status_code=500, detail={"error": "ServerError", "message": str(e)}
+                )
 
     return wrapper

@@ -29,11 +29,10 @@ class CatUseCases:
         return self.repo.get_breeds_with_ids()
 
 
-
 class BreedUseCases:
     def __init__(self, repo: AbstractCatRepository):
         self.repo = repo
 
     def add_breed(self, name: str, breed_id: int) -> dict:
         breeds = self.repo.get_breeds_with_ids()
-        return {"status": breeds }
+        return {"status": breeds}

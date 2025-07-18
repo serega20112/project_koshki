@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять">
+      <change afterPath="$PROJECT_DIR$/docs/HOW_TO_WORK_WITH_RABBIT.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/dto/dto.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/dto/dto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/exceptions/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/exceptions/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/services/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/services/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dependencies/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/adapter/adapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/adapter/adapter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/entitites/cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/entitites/cat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/events/cat_event.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/events/cat_event.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/repositories/event_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/repositories/event_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/repositories/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/repositories/repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/use_cases/use_cases.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/use_cases/use_cases.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/for_logs/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/logging_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/for_logs/middleware_logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/middleware_logging.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/api/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/api/routes/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/database/models/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/database/models/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/message_broker/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/message_broker/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/message_broker/rabbitmq_pusher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/message_broker/rabbitmq_pusher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/decorators/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/decorators/decorators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/test/create_cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/test/create_cat.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;serega20112&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/serega20112/project_koshki.git&quot;,
+    &quot;accountId&quot;: &quot;774ff932-9680-4525-b3db-ebf6bf741097&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2z5Grur92E37llYrKyINhca2YgM" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.build/docker-compose.yaml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;FastAPI.server.executor&quot;: &quot;Run&quot;,
+    &quot;Python.create_cat.executor&quot;: &quot;Run&quot;,
+    &quot;Python.log-gen.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/project_koshki/docs&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\project_koshki\docs" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\project_koshki\docs" />
+      <recent name="C:\Users\Admin\project_koshki\src" />
+      <recent name="C:\Users\Admin\project_koshki\for_logs" />
+    </key>
+  </component>
+  <component name="RunManager" selected="FastAPI.server">
+    <configuration name="server" type="Python.FastAPI">
+      <option name="file" value="C:\Users\Admin\project_koshki\src\interface\main.py" />
+      <module name="project_koshki" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/Scripts/python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="build/docker-compose.yaml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="build/docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.build/docker-compose.yaml: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.22855.92" />
+        <option value="bundled-python-sdk-b068d85d1acf-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.22855.92" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="" />
+      <created>1751013727020</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1751013727020</updated>
+      <workItem from="1751013728842" duration="634000" />
+      <workItem from="1751020334969" duration="7382000" />
+      <workItem from="1751266637343" duration="4743000" />
+      <workItem from="1751271457831" duration="2003000" />
+      <workItem from="1751278742668" duration="122000" />
+      <workItem from="1751278886175" duration="6449000" />
+      <workItem from="1751353771638" duration="718000" />
+      <workItem from="1752823801001" duration="4628000" />
+      <workItem from="1752834841669" duration="1126000" />
+    </task>
+    <task id="LOCAL-00001" summary="IB-1, Добавил логирование, в процессе переделать под кибанну и еластиксерч">
+      <option name="closed" value="true" />
+      <created>1751014359282</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1751014359282</updated>
+    </task>
+    <task id="LOCAL-00002" summary="IB-1, Теперь Elastic Search напрямую передает логи в Kibana, а Kibana соответственно выводит эти логи. Добавил README чтобы было более понятно как и что делать">
+      <option name="closed" value="true" />
+      <created>1751023590206</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1751023590206</updated>
+    </task>
+    <task id="LOCAL-00003" summary="IB-1, убрал лишнее">
+      <option name="closed" value="true" />
+      <created>1751023671997</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1751023671997</updated>
+    </task>
+    <task id="LOCAL-00004" summary="IB-1, немного переделал поля логов">
+      <option name="closed" value="true" />
+      <created>1751028289281</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1751028289281</updated>
+    </task>
+    <task id="LOCAL-00005" summary="IB-1, немного изменил поля для записи логов. Теперь для разработчиков будет легче определять где именно произошла ошибка">
+      <option name="closed" value="true" />
+      <created>1751272680130</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1751272680130</updated>
+    </task>
+    <task id="LOCAL-00006" summary="IB-1, исправил ошибку с логами">
+      <option name="closed" value="true" />
+      <created>1751283023296</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1751283023296</updated>
+    </task>
+    <task id="LOCAL-00007" summary="IB-1, переработал README, чтобы было более понятно">
+      <option name="closed" value="true" />
+      <created>1751283939968</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1751283939968</updated>
+    </task>
+    <task id="LOCAL-00008" summary="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять">
+      <option name="closed" value="true" />
+      <created>1752828410417</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1752828410417</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="IB-1, Добавил логирование, в процессе переделать под кибанну и еластиксерч" />
+    <MESSAGE value="IB-1, Теперь Elastic Search напрямую передает логи в Kibana, а Kibana соответственно выводит эти логи. Добавил README чтобы было более понятно как и что делать" />
+    <MESSAGE value="IB-1, убрал лишнее" />
+    <MESSAGE value="IB-1, немного переделал поля логов" />
+    <MESSAGE value="IB-1, немного изменил поля для записи логов. Теперь для разработчиков будет легче определять где именно произошла ошибка" />
+    <MESSAGE value="IB-1, исправил ошибку с логами" />
+    <MESSAGE value="IB-1, переработал README, чтобы было более понятно" />
+    <MESSAGE value="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять" />
+    <option name="LAST_COMMIT_MESSAGE" value="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1752827375445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
+    <SUITE FILE_PATH="coverage/project_koshki$test.coverage" NAME="test Coverage Results" MODIFIED="1751280448302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/project_koshki$server.coverage" NAME="server Coverage Results" MODIFIED="1752834983203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/project_koshki$log_gen.coverage" NAME="log-gen Coverage Results" MODIFIED="1751027384786" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

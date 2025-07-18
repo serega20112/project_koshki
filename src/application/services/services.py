@@ -9,7 +9,11 @@ from src.application.exceptions.exceptions import (
     NotFoundError,
     ValidationError,
 )
-from src.domain.events.cat_event import CatCreatedEvent, CatUpdatedEvent, CatDeletedEvent
+from src.domain.events.cat_event import (
+    CatCreatedEvent,
+    CatUpdatedEvent,
+    CatDeletedEvent,
+)
 from src.for_logs.logging_config import setup_logger
 from datetime import datetime
 
@@ -20,19 +24,17 @@ app_logger = setup_logger()
 
 class CatService:
     def __init__(
-            self,
-            repository: AbstractCatRepository,
-            event_publisher: AbstractEventPublisher
+        self, repository: AbstractCatRepository, event_publisher: AbstractEventPublisher
     ):
         self.repository = repository
         self.event_publisher = event_publisher
 
     def _log_error(
-            self,
-            exc: Exception,
-            method_name: str,
-            error_type: str = "UnknownError",
-            details: dict = None,
+        self,
+        exc: Exception,
+        method_name: str,
+        error_type: str = "UnknownError",
+        details: dict = None,
     ):
         summary = f"Ошибка {error_type}: {str(exc)}"
 
@@ -69,8 +71,8 @@ class CatService:
                     summary=f"Failed to publish event, but continuing: {str(e)}",
                     params={
                         "event_type": event.__class__.__name__,
-                        "routing_key": routing_key
-                    }
+                        "routing_key": routing_key,
+                    },
                 )
                 print(e)
         else:
@@ -116,7 +118,7 @@ class CatService:
                 event="CatCreated",
                 message=f"Cat created with id={result_dto.id}",
                 summary="New cat registered successfully",
-                params=result_dto.model_dump()
+                params=result_dto.model_dump(),
             )
 
             return result_dto
@@ -147,7 +149,7 @@ class CatService:
                 event="CatUpdated",
                 message=f"Cat updated with id={result_dto.id}",
                 summary="Cat updated successfully",
-                params=result_dto.model_dump()
+                params=result_dto.model_dump(),
             )
 
             return result_dto
@@ -202,7 +204,7 @@ class CatService:
                 event="CatDeleted",
                 message=f"Cat deleted with id={id}",
                 summary="Cat deleted successfully",
-                params={"id": id}
+                params={"id": id},
             )
 
             return {"result": "deleted"}

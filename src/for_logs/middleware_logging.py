@@ -19,7 +19,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                 "path": request.url.path,
                 "headers": dict(request.headers),
                 "action": request.method,
-            }
+            },
         )
 
         try:
@@ -34,8 +34,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                     "status_code": status_code,
                     "headers": dict(response.headers),
                     "action": request.method,
-                    "result": status_code
-                }
+                    "result": status_code,
+                },
             )
 
             if 500 <= status_code < 600:
@@ -49,10 +49,10 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                         "method": request.method,
                         "path": request.url.path,
                         "action": request.method,
-                        "result": status_code
+                        "result": status_code,
                     },
                     ErrClass="Request",
-                    ErrMethod="dispatch"
+                    ErrMethod="dispatch",
                 )
 
             return response
@@ -62,7 +62,11 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
             response = JSONResponse(
                 status_code=status_code,
-                content={"error": e.__class__.__name__, "message": e.message, "details": e.details}
+                content={
+                    "error": e.__class__.__name__,
+                    "message": e.message,
+                    "details": e.details,
+                },
             )
 
             return response
@@ -79,9 +83,9 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                     "method": request.method,
                     "path": request.url.path,
                     "action": request.method,
-                    "result": 500
+                    "result": 500,
                 },
                 ErrClass="UnknownClass",
-                ErrMethod="UnknownMethod"
+                ErrMethod="UnknownMethod",
             )
             return Response(content="Internal Server Error", status_code=500)

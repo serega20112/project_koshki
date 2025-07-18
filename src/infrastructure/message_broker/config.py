@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 
+
 class RabbitMQSettings(BaseSettings):
     host: str = "localhost"
     port: int = 5672
@@ -11,5 +12,6 @@ class RabbitMQSettings(BaseSettings):
 
     class Config:
         env_prefix = "RABBITMQ_"
+
 
 rabbitmq_settings = RabbitMQSettings()
