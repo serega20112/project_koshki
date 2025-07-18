@@ -10,45 +10,26 @@
 
 ---
 
-### 🔹 2️⃣ Запуск Elasticsearch
+### 🔹 2️⃣ Запуск контейнеров
 
-Запусти локально **Elasticsearch** версии 8.x (проект протестирован на 8.13.0):
-
-```bash
-docker run --name elastic-local -p 9200:9200 -e "discovery.type=single-node" elasticsearch:8.13.0
-````
-
-✅ Убедись, что Elasticsearch доступен по адресу:
-
-```
-http://localhost:9200
-```
-
----
-
-### 🔹 3️⃣ Запуск Kibana
-
-Запусти **Kibana** через Docker:
+в папке с docker-compose сделай:
 
 ```bash
-docker run --name kibana-local -p 5601:5601 --link elastic-local:elasticsearch kibana:8.13.0
+docker-compose up --build
 ```
+- Если всё хорошо, то:
+  - Kibana доступна на ```localhost:5601```
+  - Elastic доступен на ```localhost:9200```
+  - RabbitMQ доступен на ```localhost:15672```
 
-✅ Kibana откроется по адресу:
 
-```
-http://localhost:5601
-```
-
----
-
-### 🔹 4️⃣ Установка Python-зависимостей
+### 🔹 3️⃣  Установка Python-зависимостей
 
 Убедись, что у тебя установлен Python 3.10+
 
 Установи зависимости:
 ```bash
-pip install fastapi uvicorn elasticsearch==8.7.0 python-json-logger aio-pika==9.4.0
+pip install fastapi uvicorn elasticsearch==8.7.0 python-json-logger pika
 ```
 
 ❗ Важно: Используй клиент **elasticsearch** версии 8.x для совместимости с сервером 8.x

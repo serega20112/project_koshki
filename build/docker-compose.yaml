@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # RabbitMQ
+  cats_rabbitmq:
+    image: rabbitmq:3-management
+    container_name: cats_rabbitmq
+    ports:
+      - "15672:15672"  # Management UI
+      - "5672:5672"    # AMQP protocol
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  # Elasticsearch
+  elastic-local:
+    image: elasticsearch:8.13.0
+    container_name: elastic-local
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  # Kibana
+  kibana-local:
+    image: kibana:8.13.0
+    container_name: kibana-local
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elastic-local
+    environment:
+      ELASTICSEARCH_HOSTS: http://elastic-local:9200
+
+volumes:
+  esdata:
