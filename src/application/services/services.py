@@ -1,4 +1,6 @@
-from typing import List, Dict
+from typing import List, Dict, Optional, Any
+
+from src.domain.repositories.event_repository import AbstractEventPublisher
 from src.domain.repositories.repository import AbstractCatRepository
 from src.application.dto.dto import CatDTO, BreedDTO
 from src.application.exceptions.exceptions import (
@@ -7,26 +9,33 @@ from src.application.exceptions.exceptions import (
     NotFoundError,
     ValidationError,
 )
+from src.domain.events.cat_event import CatCreatedEvent, CatUpdatedEvent, CatDeletedEvent
 from src.for_logs.logging_config import setup_logger
+from datetime import datetime
 
+from src.infrastructure.message_broker.rabbitmq_pusher import RabbitMQPublisher
 
 app_logger = setup_logger()
 
 
 class CatService:
-    def __init__(self, repository: AbstractCatRepository):
+    def __init__(
+            self,
+            repository: AbstractCatRepository,
+            event_publisher: AbstractEventPublisher
+    ):
         self.repository = repository
+        self.event_publisher = event_publisher
 
     def _log_error(
-        self,
-        exc: Exception,
-        method_name: str,
-        error_type: str = "UnknownError",
-        details: dict = None,
+            self,
+            exc: Exception,
+            method_name: str,
+            error_type: str = "UnknownError",
+            details: dict = None,
     ):
         summary = f"Ошибка {error_type}: {str(exc)}"
 
-        # Получаем ErrClass и ErrMethod из самого исключения, если есть
         err_class = getattr(exc, "ErrClass", self.__class__.__name__)
         err_method = getattr(exc, "ErrMethod", method_name)
 
@@ -45,6 +54,27 @@ class CatService:
             ErrClass=err_class,
             ErrMethod=err_method,
         )
+
+    def _publish_event(self, event: Any, routing_key: str) -> None:
+        """Публикует событие, если publisher доступен"""
+        if self.event_publisher:
+            try:
+                self.event_publisher.publish(event, routing_key)
+            except Exception as e:
+                # Логируем ошибку, но не прерываем основной процесс
+                app_logger.error(
+                    logger_class=self.__class__.__name__,
+                    event="EventPublishError",
+                    message=str(e),
+                    summary=f"Failed to publish event, but continuing: {str(e)}",
+                    params={
+                        "event_type": event.__class__.__name__,
+                        "routing_key": routing_key
+                    }
+                )
+                print(e)
+        else:
+            print("ошибка какая то или лог не отправлен")
 
     def get_one(self, id: int) -> CatDTO:
         try:
@@ -73,8 +103,23 @@ class CatService:
                 raise ValidationError(
                     "Возраст должен быть положительным числом", details=dto.model_dump()
                 ).set_context(self.__class__.__name__, "reg_new")
+
             created_cat = self.repository.create(dto)
-            return CatDTO.model_validate(created_cat)
+            result_dto = CatDTO.model_validate(created_cat)
+
+            # Публикуем событие о создании кошки
+            event = CatCreatedEvent.from_dto(result_dto)
+            self._publish_event(event, "cat.created")
+
+            app_logger.info(
+                logger_class=self.__class__.__name__,
+                event="CatCreated",
+                message=f"Cat created with id={result_dto.id}",
+                summary="New cat registered successfully",
+                params=result_dto.model_dump()
+            )
+
+            return result_dto
         except ValidationError as e:
             self._log_error(
                 e, "reg_new", error_type="ValidationError", details=e.details
@@ -91,7 +136,21 @@ class CatService:
     def update_one(self, dto: CatDTO) -> CatDTO:
         try:
             updated_cat = self.repository.update(dto)
-            return CatDTO.model_validate(updated_cat)
+            result_dto = CatDTO.model_validate(updated_cat)
+
+            # Публикуем событие об обновлении кошки
+            event = CatUpdatedEvent.from_dto(result_dto)
+            self._publish_event(event, "cat.updated")
+
+            app_logger.info(
+                logger_class=self.__class__.__name__,
+                event="CatUpdated",
+                message=f"Cat updated with id={result_dto.id}",
+                summary="Cat updated successfully",
+                params=result_dto.model_dump()
+            )
+
+            return result_dto
         except Exception as e:
             self._log_error(
                 e, "update_one", error_type="ServerError", details=dto.model_dump()
@@ -133,6 +192,19 @@ class CatService:
                 raise NotFoundError(
                     f"Кошка с id={id} не найдена", details={"id": id}
                 ).set_context(self.__class__.__name__, "delete_cat")
+
+            # Публикуем событие об удалении кошки
+            event = CatDeletedEvent(cat_id=id, deleted_at=datetime.utcnow())
+            self._publish_event(event, "cat.deleted")
+
+            app_logger.info(
+                logger_class=self.__class__.__name__,
+                event="CatDeleted",
+                message=f"Cat deleted with id={id}",
+                summary="Cat deleted successfully",
+                params={"id": id}
+            )
+
             return {"result": "deleted"}
         except NotFoundError as e:
             self._log_error(

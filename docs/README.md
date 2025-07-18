@@ -48,7 +48,7 @@ http://localhost:5601
 
 Установи зависимости:
 ```bash
-pip install fastapi uvicorn elasticsearch==8.7.0 python-json-logger
+pip install fastapi uvicorn elasticsearch==8.7.0 python-json-logger aio-pika==9.4.0
 ```
 
 ❗ Важно: Используй клиент **elasticsearch** версии 8.x для совместимости с сервером 8.x
