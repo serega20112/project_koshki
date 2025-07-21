@@ -145,4 +145,4 @@ rabbitmq-plugins enable rabbitmq_management # включить веб-интер
 ```
 ### Жизненный цикл сообщения схематично:
 
-![img.png](img.png)
+![img.png](images/img.png)

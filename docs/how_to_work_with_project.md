@@ -28,8 +28,13 @@ docker-compose up --build
 Убедись, что у тебя установлен Python 3.10+
 
 Установи зависимости:
+!!!Но сначала перейди в нужную директорию:
 ```bash
-pip install fastapi uvicorn elasticsearch==8.7.0 python-json-logger pika
+cd ..
+```
+
+```bash
+pip install -r requirements.txt
 ```
 
 ❗ Важно: Используй клиент **elasticsearch** версии 8.x для совместимости с сервером 8.x
