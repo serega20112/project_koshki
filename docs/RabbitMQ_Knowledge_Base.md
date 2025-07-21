@@ -143,3 +143,6 @@ rabbitmqctl list_exchanges                 # список обменников
 rabbitmqctl purge_queue queue_name         # очистить очередь
 rabbitmq-plugins enable rabbitmq_management # включить веб-интерфейс
 ```
+### Жизненный цикл сообщения схематично:
+
+![img.png](img.png)
