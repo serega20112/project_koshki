@@ -1,65 +1,62 @@
-import requests
-import random
-import string
+import asyncio
+import aiohttp
+from time import time
 
-# Настройки
-API_URL = "http://localhost:8000/cats"  # URL вашего FastAPI маршрута
-NUM_CATS = 100  # Количество кошек для создания
+# Базовый URL для локального хоста FastAPI
+BASE_URL = "http://localhost:8000"
 
-# Списки для генерации случайных данных
-names = [
-    "Luna",
-    "Milo",
-    "Bella",
-    "Simba",
-    "Leo",
-    "Lola",
-    "Max",
-    "Nala",
-    "Oliver",
-    "Chloe",
-]
-colors = ["Black", "White", "Gray", "Orange", "Brown", "Spotted"]
-breeds = ["Persian", "Siamese", "Maine Coon", "Ragdoll", "British Shorthair"]
+# Данные для регистрации новой кошки
+new_cat_data = {
+    "id": 0,
+    "name": "Fluffy",
+    "age": 2,
+    "color": "White",
+    "breed": "Persian",
+    "breed_id": 0
+}
 
+# Данные для обновления кошки
+update_cat_data = {
+    "id": 1,
+    "name": "FluffyUpdated",
+    "age": 3,
+    "color": "Gray",
+    "breed": "Siamese",
+    "breed_id": 1
+}
 
-# Функция для генерации данных кошки
-def generate_cat_data():
-    return {
-        "id": "".join(random.choices(string.digits, k=5)),  # Уникальный 5-значный ID
-        "name": random.choice(names),
-        "age": random.randint(1, 15),  # Возраст от 1 до 15 лет
-        "color": random.choice(colors),
-        "breed": random.choice(breeds),
-        "breed_id": random.randint(
-            100, 999
-        ),  # Поле с подчеркиванием для соответствия CatDTO
-    }
-
-
-# Основной цикл
-cats_created = 0
-
-print(f"Начало создания {NUM_CATS} кошек...")
-
-for _ in range(NUM_CATS):
-    cat_data = generate_cat_data()
-    try:
-        response = requests.post(
-            API_URL, json=cat_data, headers={"Content-Type": "application/json"}
-        )
-        if response.status_code in [200, 201]:
-            print(f"Успешно создана кошка: {cat_data['name']} (ID: {cat_data['id']})")
-            cats_created += 1
+async def register_cat(session, cat_data):
+    async with session.post(f"{BASE_URL}/cats", json=cat_data) as response:
+        if response.status == 200:
+            print(f"Cat registered: {await response.text()}")
         else:
-            print(
-                f"Ошибка при создании кошки {cat_data['name']}: {response.status_code} - {response.text}"
-            )
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка подключения для кошки {cat_data['name']}: {e}")
+            print(f"Failed to register cat: {response.status}")
 
-print(f"\nЗавершено.")
-print(f"Создано {cats_created} кошек из {NUM_CATS}.")
+async def update_cat(session, cat_id, cat_data):
+    async with session.put(f"{BASE_URL}/cats/{cat_id}", json=cat_data) as response:
+        if response.status == 200:
+            print(f"Cat updated: {await response.text()}")
+        else:
+            print(f"Failed to update cat: {response.status}")
 
-if cats_created < NUM_CATS:
-    print(f"Создано меньше кошек из-за ошибок. Проверьте логи выше.")
+async def run_test():
+    async with aiohttp.ClientSession() as session:
+        # Создаем список задач для имитации высокой нагрузки
+        tasks = []
+        requests_per_minute = 300000
+        tasks_count = requests_per_minute // 60  # ~5000 запросов в секунду
+
+        for _ in range(tasks_count):
+            # Регистрация новой кошки
+            tasks.append(register_cat(session, new_cat_data))
+            # Обновление кошки
+            tasks.append(update_cat(session, 1, update_cat_data))
+
+        # Запускаем все задачи параллельно
+        await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    start_time = time()
+    asyncio.run(run_test())
+    end_time = time()
+    print(f"Test completed in {end_time - start_time:.2f} seconds")

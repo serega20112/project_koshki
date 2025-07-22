@@ -1,3 +1,4 @@
+import threading
 import pika
 import json
 from src.domain.events.cat_event import CatCreatedEvent
@@ -6,8 +7,7 @@ from src.for_logs.logging_config import setup_logger
 logger = setup_logger()
 
 
-def callback(ch, method, properties, body):
-    """Обрабатывает входящее сообщение из очереди."""
+def callback(ch, method, body):
     try:
         event_data = json.loads(body)
         event_type = event_data.get("event_type")
@@ -21,7 +21,6 @@ def callback(ch, method, properties, body):
                 summary="Cat created event processed successfully",
                 params={"cat_event": cat_event.model_dump()},
             )
-
         else:
             logger.warning(
                 logger_class="CatConsumer",
@@ -44,41 +43,64 @@ def callback(ch, method, properties, body):
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 
-def start_consumer():
-    """Запускает потребителя, слушающего очередь cat.*."""
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
-        channel = connection.channel()
+class RabbitConsumer:
+    def __init__(self):
+        self._thread = None
+        self._connection = None
+        self._channel = None
+        self._stopping = False
 
-        channel.exchange_declare(
-            exchange="cat_events", exchange_type="topic", durable=True
-        )
-        channel.queue_declare(queue="cat.*", durable=True)
-        channel.queue_bind(exchange="cat_events", queue="cat.*", routing_key="cat.*")
+    def _consume(self):
+        try:
+            self._connection = pika.BlockingConnection(
+                pika.ConnectionParameters("localhost")
+            )
+            self._channel = self._connection.channel()
 
-        channel.basic_consume(queue="cat.*", on_message_callback=callback)
+            self._channel.exchange_declare(
+                exchange="cat_event", exchange_type="topic", durable=True
+            )
+            self._channel.queue_declare(queue="cat.*", durable=True)
+            self._channel.queue_bind(
+                exchange="cat_events", queue="cat.*", routing_key="cat.*"
+            )
 
-        logger.info(
-            logger_class="CatConsumer",
-            event="ConsumerStarted",
-            message="Cat consumer started. Waiting for events...",
-            summary="Consumer is waiting for cat events on 'cat.*' queue.",
-        )
+            self._channel.basic_consume(queue="cat.*", on_message_callback=callback)
 
-        channel.start_consuming()
+            logger.info(
+                logger_class="CatConsumer",
+                event="ConsumerStarted",
+                message="Cat consumer started. Waiting for events...",
+                summary="Consumer is waiting for cat events on 'cat.*' queue.",
+            )
 
-    except KeyboardInterrupt:
-        logger.info(
-            logger_class="CatConsumer",
-            event="ConsumerStopped",
-            message="Consumer stopped by user.",
-            summary="Cat consumer has been stopped.",
-        )
-    except Exception as e:
-        logger.error(
-            logger_class="CatConsumer",
-            event="ConsumerStartError",
-            message=str(e),
-            summary=f"Error starting consumer: {str(e)}",
-            params={"exception": str(e)},
-        )
+            while not self._stopping:
+                self._connection.process_data_events(time_limit=1)
+
+        except Exception as e:
+            logger.error(
+                logger_class="CatConsumer",
+                event="ConsumerError",
+                message=str(e),
+                summary=f"Error in consumer loop: {str(e)}",
+                params={"exception": str(e)},
+            )
+        finally:
+            if self._connection and not self._connection.is_closed:
+                self._connection.close()
+            logger.info(
+                logger_class="CatConsumer",
+                event="ConsumerStopped",
+                message="Consumer stopped.",
+                summary="Cat consumer has been stopped.",
+            )
+
+    async def start(self):
+        self._stopping = False
+        self._thread = threading.Thread(target=self._consume, daemon=True)
+        self._thread.start()
+
+    async def stop(self):
+        self._stopping = True
+        if self._thread and self._thread.is_alive():
+            self._thread.join(timeout=5)

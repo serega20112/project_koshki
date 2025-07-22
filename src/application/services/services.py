@@ -83,22 +83,7 @@ class CatService:
 
             created_cat = self.repository.create(dto)
             result_dto = CatDTO.model_validate(created_cat)
-
-            # Публикуем событие о создании кошки
-            event = CatCreatedEvent.from_dto(result_dto)
-            try:
-                self.event_publisher.publish(event, "cat.created")
-            except Exception as e:
-                app_logger.error(
-                    logger_class=self.__class__.__name__,
-                    event="EventPublishError",
-                    message=str(e),
-                    summary=f"Не удалось опубликовать событие: {str(e)}",
-                    params={
-                        "event_type": event.__class__.__name__,
-                        "routing_key": "cat.created",
-                    },
-                )
+            event = CatCreatedEvent.from_dto(created_cat)
 
             app_logger.info(
                 logger_class=self.__class__.__name__,
@@ -126,23 +111,7 @@ class CatService:
         try:
             updated_cat = self.repository.update(dto)
             result_dto = CatDTO.model_validate(updated_cat)
-
-            # Публикуем событие об обновлении кошки
-            event = CatUpdatedEvent.from_dto(result_dto)
-            try:
-                self.event_publisher.publish(event, "cat.updated")
-            except Exception as e:
-                app_logger.error(
-                    logger_class=self.__class__.__name__,
-                    event="EventPublishError",
-                    message=str(e),
-                    summary=f"Не удалось опубликовать событие: {str(e)}",
-                    params={
-                        "event_type": event.__class__.__name__,
-                        "routing_key": "cat.updated",
-                    },
-                )
-
+            event = CatCreatedEvent.from_dto(updated_cat)
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="CatUpdated",
@@ -193,23 +162,6 @@ class CatService:
                 raise NotFoundError(
                     f"Кошка с id={id} не найдена", details={"id": id}
                 ).set_context(self.__class__.__name__, "delete_cat")
-
-            # Публикуем событие об удалении кошки
-            event = CatDeletedEvent(cat_id=id, deleted_at=datetime.utcnow())
-            try:
-                self.event_publisher.publish(event, "cat.deleted")
-            except Exception as e:
-                app_logger.error(
-                    logger_class=self.__class__.__name__,
-                    event="EventPublishError",
-                    message=str(e),
-                    summary=f"Не удалось опубликовать событие: {str(e)}",
-                    params={
-                        "event_type": event.__class__.__name__,
-                        "routing_key": "cat.deleted",
-                    },
-                )
-
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="CatDeleted",

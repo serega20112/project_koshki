@@ -4,26 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять">
-      <change afterPath="$PROJECT_DIR$/docs/HOW_TO_WORK_WITH_RABBIT.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/dto/dto.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/dto/dto.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/exceptions/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/exceptions/exceptions.py" afterDir="false" />
+    <list default="true" id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="IB-1, убрал лишние зависимости">
+      <change afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/init_rac.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/tasks/event_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/utils/register_events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/animal.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/services/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/services/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dependencies/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/adapter/adapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/adapter/adapter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/entitites/cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/entitites/cat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/events/cat_event.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/events/cat_event.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/repositories/event_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/repositories/event_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/repositories/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/repositories/repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/use_cases/use_cases.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/use_cases/use_cases.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/for_logs/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/logging_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/consumer/consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/consumer/consumer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/for_logs/middleware_logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/middleware_logging.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/api/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/api/routes/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/database/models/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/database/models/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/message_broker/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/message_broker/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/message_broker/rabbitmq_pusher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/message_broker/rabbitmq_pusher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/database/animal.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/database/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/database/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/message_broker/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/message_broker/rabbitmq_pusher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/rabbitmq_pusher.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/interface/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/decorators/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/decorators/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/test/create_cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/test/create_cat.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,6 +35,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -89,6 +85,7 @@
       <recent name="C:\Users\Admin\project_koshki\docs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\project_koshki\src\infrastructure\rabbit_and_celery" />
       <recent name="C:\Users\Admin\project_koshki\docs" />
       <recent name="C:\Users\Admin\project_koshki\src" />
       <recent name="C:\Users\Admin\project_koshki\for_logs" />
@@ -155,6 +152,7 @@
       <workItem from="1751353771638" duration="718000" />
       <workItem from="1752823801001" duration="4628000" />
       <workItem from="1752834841669" duration="1126000" />
+      <workItem from="1753180511516" duration="7466000" />
     </task>
     <task id="LOCAL-00001" summary="IB-1, Добавил логирование, в процессе переделать под кибанну и еластиксерч">
       <option name="closed" value="true" />
@@ -220,11 +218,30 @@
       <option name="project" value="LOCAL" />
       <updated>1752828410417</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="IB-1, убрал лишние зависимости">
+      <option name="closed" value="true" />
+      <created>1753172980487</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1753172980487</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="IB-1, Добавил логирование, в процессе переделать под кибанну и еластиксерч" />
@@ -235,12 +252,14 @@
     <MESSAGE value="IB-1, исправил ошибку с логами" />
     <MESSAGE value="IB-1, переработал README, чтобы было более понятно" />
     <MESSAGE value="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять" />
-    <option name="LAST_COMMIT_MESSAGE" value="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять" />
+    <MESSAGE value="IB-1, убрал лишние зависимости" />
+    <option name="LAST_COMMIT_MESSAGE" value="IB-1, убрал лишние зависимости" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1752827375445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
+    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1753187853743" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
     <SUITE FILE_PATH="coverage/project_koshki$test.coverage" NAME="test Coverage Results" MODIFIED="1751280448302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/project_koshki$server.coverage" NAME="server Coverage Results" MODIFIED="1752834983203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/project_koshki$server.coverage" NAME="server Coverage Results" MODIFIED="1753188264436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/project_koshki$consumer.coverage" NAME="consumer Coverage Results" MODIFIED="1753100264359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/consumer" />
     <SUITE FILE_PATH="coverage/project_koshki$log_gen.coverage" NAME="log-gen Coverage Results" MODIFIED="1751027384786" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

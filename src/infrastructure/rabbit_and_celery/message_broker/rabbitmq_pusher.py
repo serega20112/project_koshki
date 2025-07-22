@@ -2,9 +2,10 @@ import json
 import pika
 
 from src.domain.repositories.event_repository import AbstractEventPublisher
-from src.infrastructure.message_broker.config import rabbitmq_settings
+from src.infrastructure.rabbit_and_celery.message_broker.config import rabbitmq_settings
 from src.for_logs.logging_config import setup_logger
 from src.application.exceptions.exceptions import AppError
+import re
 
 app_logger = setup_logger()
 
@@ -20,6 +21,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
             credentials = pika.PlainCredentials(
                 rabbitmq_settings.username, rabbitmq_settings.password
             )
+            mandatory = True
             parameters = pika.ConnectionParameters(
                 host=rabbitmq_settings.host,
                 port=rabbitmq_settings.port,
@@ -73,7 +75,16 @@ class RabbitMQPublisher(AbstractEventPublisher):
             )
             print(e)
 
-    def publish(self, event, routing_key: str):
+    @staticmethod
+    def _class_name_to_routing_key(event) -> str:
+        name = event.__class__.__name__
+        if name.endswith("Event"):
+            name = name[:-5]
+        parts = re.findall(r"[A-Z][a-z]*", name)
+        return ".".join(p.lower() for p in parts)
+
+    def publish(self, event):
+        routing_key = self._class_name_to_routing_key(event)
         if not self.channel or self.connection is None or self.connection.is_closed:
             self.connect()
         try:
