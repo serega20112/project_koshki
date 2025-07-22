@@ -54,9 +54,7 @@ def start_consumer():
             exchange="cat_events", exchange_type="topic", durable=True
         )
         channel.queue_declare(queue="cat.*", durable=True)
-        channel.queue_bind(
-            exchange="cat_events", queue="cat.*", routing_key="cat.*"
-        )
+        channel.queue_bind(exchange="cat_events", queue="cat.*", routing_key="cat.*")
 
         channel.basic_consume(queue="cat.*", on_message_callback=callback)
 

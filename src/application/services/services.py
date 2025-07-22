@@ -17,17 +17,13 @@ from src.domain.events.cat_event import (
 from src.for_logs.logging_config import setup_logger
 from datetime import datetime
 
-from src.infrastructure.message_broker.rabbitmq_pusher import RabbitMQPublisher
-
 app_logger = setup_logger()
 
 
 class CatService:
-    def __init__(
-        self, repository: AbstractCatRepository, event_publisher: AbstractEventPublisher
-    ):
+    def __init__(self, repository: AbstractCatRepository):
         self.repository = repository
-        self.event_publisher = event_publisher
+        self.event_publisher: AbstractEventPublisher
 
     def _log_error(
         self,
@@ -56,27 +52,6 @@ class CatService:
             ErrClass=err_class,
             ErrMethod=err_method,
         )
-
-    def _publish_event(self, event: Any, routing_key: str) -> None:
-        """Публикует событие, если publisher доступен"""
-        if self.event_publisher:
-            try:
-                self.event_publisher.publish(event, routing_key)
-            except Exception as e:
-                # Логируем ошибку, но не прерываем основной процесс
-                app_logger.error(
-                    logger_class=self.__class__.__name__,
-                    event="EventPublishError",
-                    message=str(e),
-                    summary=f"Failed to publish event, but continuing: {str(e)}",
-                    params={
-                        "event_type": event.__class__.__name__,
-                        "routing_key": routing_key,
-                    },
-                )
-                print(e)
-        else:
-            print("ошибка какая то или лог не отправлен")
 
     def get_one(self, id: int) -> CatDTO:
         try:
@@ -111,13 +86,25 @@ class CatService:
 
             # Публикуем событие о создании кошки
             event = CatCreatedEvent.from_dto(result_dto)
-            self._publish_event(event, "cat.created")
+            try:
+                self.event_publisher.publish(event, "cat.created")
+            except Exception as e:
+                app_logger.error(
+                    logger_class=self.__class__.__name__,
+                    event="EventPublishError",
+                    message=str(e),
+                    summary=f"Не удалось опубликовать событие: {str(e)}",
+                    params={
+                        "event_type": event.__class__.__name__,
+                        "routing_key": "cat.created",
+                    },
+                )
 
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="CatCreated",
-                message=f"Cat created with id={result_dto.id}",
-                summary="New cat registered successfully",
+                message=f"Кошка создана с id={result_dto.id}",
+                summary="Кошка успешно зарегистрирована",
                 params=result_dto.model_dump(),
             )
 
@@ -142,13 +129,25 @@ class CatService:
 
             # Публикуем событие об обновлении кошки
             event = CatUpdatedEvent.from_dto(result_dto)
-            self._publish_event(event, "cat.updated")
+            try:
+                self.event_publisher.publish(event, "cat.updated")
+            except Exception as e:
+                app_logger.error(
+                    logger_class=self.__class__.__name__,
+                    event="EventPublishError",
+                    message=str(e),
+                    summary=f"Не удалось опубликовать событие: {str(e)}",
+                    params={
+                        "event_type": event.__class__.__name__,
+                        "routing_key": "cat.updated",
+                    },
+                )
 
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="CatUpdated",
-                message=f"Cat updated with id={result_dto.id}",
-                summary="Cat updated successfully",
+                message=f"Кошка обновлена с id={result_dto.id}",
+                summary="Кошка успешно обновлена",
                 params=result_dto.model_dump(),
             )
 
@@ -197,13 +196,25 @@ class CatService:
 
             # Публикуем событие об удалении кошки
             event = CatDeletedEvent(cat_id=id, deleted_at=datetime.utcnow())
-            self._publish_event(event, "cat.deleted")
+            try:
+                self.event_publisher.publish(event, "cat.deleted")
+            except Exception as e:
+                app_logger.error(
+                    logger_class=self.__class__.__name__,
+                    event="EventPublishError",
+                    message=str(e),
+                    summary=f"Не удалось опубликовать событие: {str(e)}",
+                    params={
+                        "event_type": event.__class__.__name__,
+                        "routing_key": "cat.deleted",
+                    },
+                )
 
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="CatDeleted",
-                message=f"Cat deleted with id={id}",
-                summary="Cat deleted successfully",
+                message=f"Кошка удалена с id={id}",
+                summary="Кошка успешно удалена",
                 params={"id": id},
             )
 

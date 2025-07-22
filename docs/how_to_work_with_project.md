@@ -60,6 +60,8 @@ pip install -r requirements.txt
 ## ⚙️ Настройка Kibana
 
 1️⃣ Перейди в Kibana → **Stack Management** → **Index Patterns (или Data Views)**
+
+
 2️⃣ Создай новый индекс-паттерн:
 
 ```
@@ -67,6 +69,9 @@ koshki-logs*
 ```
 
 3️⃣ Выбери поле **@timestamp** как поле для временной фильтрации
+
+
+
 4️⃣ Сохрани индекс-паттерн
 
 ---
