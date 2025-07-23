@@ -15,13 +15,14 @@ class RabbitMQPublisher(AbstractEventPublisher):
         self.connection = None
         self.channel = None
         self.exchange = rabbitmq_settings.exchange_name
+        self.queue_name = rabbitmq_settings.queue_name
+        self.routing_key = rabbitmq_settings.routing_key
 
     def connect(self):
         try:
             credentials = pika.PlainCredentials(
                 rabbitmq_settings.username, rabbitmq_settings.password
             )
-            mandatory = True
             parameters = pika.ConnectionParameters(
                 host=rabbitmq_settings.host,
                 port=rabbitmq_settings.port,
@@ -30,29 +31,32 @@ class RabbitMQPublisher(AbstractEventPublisher):
             )
             self.connection = pika.BlockingConnection(parameters)
             self.channel = self.connection.channel()
-            # Объявляем exchange, если его нет
+
+            # Явно создаём exchange
             self.channel.exchange_declare(
-                exchange=self.exchange, exchange_type="topic", durable=True
+                exchange=self.exchange,
+                exchange_type="topic",
+                durable=True,
+                passive=False,  # важно — создать, если нет
             )
-            app_logger.info(
-                logger_class=self.__class__.__name__,
-                event="RabbitMQConnected",
-                message="Successfully connected to RabbitMQ",
-                summary="RabbitMQ connection established",
+            print(f"[✓] Exchange '{self.exchange}' создан (или уже существует)")
+
+            self.channel.queue_declare(queue=self.queue_name, durable=True)
+            print(f"[✓] Queue '{self.queue_name}' создана (или уже есть)")
+
+            self.channel.queue_bind(
+                exchange=self.exchange,
+                queue=self.queue_name,
+                routing_key=self.routing_key,
             )
+            print(f"[✓] Queue привязана к exchange по ключу '{self.routing_key}'")
+
+        except pika.exceptions.ChannelClosedByBroker as e:
+            print(f"[✗] Ошибка: Channel closed by broker — {e}")
+            raise
         except Exception as e:
-            app_logger.error(
-                logger_class=self.__class__.__name__,
-                event="RabbitMQConnectionError",
-                message=str(e),
-                summary=f"Failed to connect to RabbitMQ: {str(e)}",
-                ErrClass=self.__class__.__name__,
-                ErrMethod="connect",
-            )
-            print(e)
-            raise AppError(f"Failed to connect to RabbitMQ: {e}").set_context(
-                self.__class__.__name__, "connect"
-            ) from e
+            print(f"[✗] Ошибка подключения: {e}")
+            raise
 
     def disconnect(self):
         try:
@@ -83,18 +87,30 @@ class RabbitMQPublisher(AbstractEventPublisher):
         parts = re.findall(r"[A-Z][a-z]*", name)
         return ".".join(p.lower() for p in parts)
 
-    def publish(self, event):
+    def publish(self, event, routing_key):
         routing_key = self._class_name_to_routing_key(event)
+
         if not self.channel or self.connection is None or self.connection.is_closed:
             self.connect()
+
         try:
-            message_body = json.dumps(event.to_dict())
-            self.channel.basic_publish(
+            if not hasattr(event, "to_dict") or not callable(event.to_dict):
+                raise ValueError(f"Event must have .to_dict(). Got: {type(event)}")
+
+            payload = event.to_dict()
+            message_body = json.dumps(payload, default=str)
+            self.channel.confirm_delivery()
+            success = self.channel.basic_publish(
                 exchange=self.exchange,
                 routing_key=routing_key,
                 body=message_body,
-                properties=pika.BasicProperties(content_type="application/json"),
+                properties=pika.BasicProperties(
+                    content_type="application/json",
+                    delivery_mode=2,
+                ),
             )
+            print(success)
+
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="EventPublished",
@@ -103,7 +119,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 params={
                     "event_type": event.__class__.__name__,
                     "routing_key": routing_key,
-                    "event_data": event.to_dict(),
+                    "event_data": payload,
                 },
             )
 
@@ -114,7 +130,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 message=str(e),
                 summary=f"Failed to publish event: {str(e)}",
                 params={
-                    "event_type": event.__class__.__name__,
+                    "event_type": getattr(event, "__class__", type(event).__name__),
                     "routing_key": routing_key,
                 },
                 ErrClass=self.__class__.__name__,
@@ -124,3 +140,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
             raise AppError(f"Failed to publish event: {e}").set_context(
                 self.__class__.__name__, "publish"
             ) from e
+
+
+def get_rabbit_publisher() -> RabbitMQPublisher:
+    return RabbitMQPublisher()

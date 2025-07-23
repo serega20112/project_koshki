@@ -7,7 +7,7 @@ from src.for_logs.logging_config import setup_logger
 logger = setup_logger()
 
 
-def callback(ch, method, body):
+def callback(ch, method, properties, body):
     try:
         event_data = json.loads(body)
         event_type = event_data.get("event_type")
@@ -52,6 +52,14 @@ class RabbitConsumer:
 
     def _consume(self):
         try:
+            credentials = pika.PlainCredentials("guest", "guest")
+            parameters = pika.ConnectionParameters(
+                host="localhost",
+                port=5672,
+                virtual_host="/",
+                credentials=credentials,
+            )
+            self._connection = pika.BlockingConnection(parameters)
             self._connection = pika.BlockingConnection(
                 pika.ConnectionParameters("localhost")
             )
@@ -62,7 +70,7 @@ class RabbitConsumer:
             )
             self._channel.queue_declare(queue="cat.*", durable=True)
             self._channel.queue_bind(
-                exchange="cat_events", queue="cat.*", routing_key="cat.*"
+                exchange="cat_event", queue="cat.*", routing_key="cat.*"
             )
 
             self._channel.basic_consume(queue="cat.*", on_message_callback=callback)
@@ -85,15 +93,7 @@ class RabbitConsumer:
                 summary=f"Error in consumer loop: {str(e)}",
                 params={"exception": str(e)},
             )
-        finally:
-            if self._connection and not self._connection.is_closed:
-                self._connection.close()
-            logger.info(
-                logger_class="CatConsumer",
-                event="ConsumerStopped",
-                message="Consumer stopped.",
-                summary="Cat consumer has been stopped.",
-            )
+            print(e)
 
     async def start(self):
         self._stopping = False

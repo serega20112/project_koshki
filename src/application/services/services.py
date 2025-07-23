@@ -1,6 +1,5 @@
-from typing import List, Dict, Optional, Any
+from typing import List, Dict
 
-from src.domain.repositories.event_repository import AbstractEventPublisher
 from src.domain.repositories.repository import AbstractCatRepository
 from src.application.dto.dto import CatDTO, BreedDTO
 from src.application.exceptions.exceptions import (
@@ -15,7 +14,6 @@ from src.domain.events.cat_event import (
     CatDeletedEvent,
 )
 from src.for_logs.logging_config import setup_logger
-from datetime import datetime
 
 app_logger = setup_logger()
 
@@ -23,7 +21,6 @@ app_logger = setup_logger()
 class CatService:
     def __init__(self, repository: AbstractCatRepository):
         self.repository = repository
-        self.event_publisher: AbstractEventPublisher
 
     def _log_error(
         self,
@@ -33,7 +30,6 @@ class CatService:
         details: dict = None,
     ):
         summary = f"Ошибка {error_type}: {str(exc)}"
-
         err_class = getattr(exc, "ErrClass", self.__class__.__name__)
         err_method = getattr(exc, "ErrMethod", method_name)
 
@@ -57,9 +53,7 @@ class CatService:
         try:
             cat = self.repository.get_by_id(id)
             if not cat:
-                raise NotFoundError(
-                    f"Кошка с id={id} не найдена", details={"id": id}
-                ).set_context("CatService", "get_one")
+                raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
             return CatDTO.model_validate(cat)
         except NotFoundError as e:
             self._log_error(
@@ -79,11 +73,13 @@ class CatService:
             if dto.age <= 0:
                 raise ValidationError(
                     "Возраст должен быть положительным числом", details=dto.model_dump()
-                ).set_context(self.__class__.__name__, "reg_new")
+                )
 
             created_cat = self.repository.create(dto)
             result_dto = CatDTO.model_validate(created_cat)
-            event = CatCreatedEvent.from_dto(created_cat)
+
+            # ✅ Устанавливаем событие
+            self.event = CatCreatedEvent.from_dto(result_dto)
 
             app_logger.info(
                 logger_class=self.__class__.__name__,
@@ -92,8 +88,9 @@ class CatService:
                 summary="Кошка успешно зарегистрирована",
                 params=result_dto.model_dump(),
             )
-
+            print(f"🎯 [CatService] Event set: {self.event}")
             return result_dto
+
         except ValidationError as e:
             self._log_error(
                 e, "reg_new", error_type="ValidationError", details=e.details
@@ -111,7 +108,10 @@ class CatService:
         try:
             updated_cat = self.repository.update(dto)
             result_dto = CatDTO.model_validate(updated_cat)
-            event = CatCreatedEvent.from_dto(updated_cat)
+
+            # ✅ Устанавливаем событие
+            self.event = CatUpdatedEvent.from_dto(updated_cat)
+
             app_logger.info(
                 logger_class=self.__class__.__name__,
                 event="CatUpdated",
@@ -119,8 +119,9 @@ class CatService:
                 summary="Кошка успешно обновлена",
                 params=result_dto.model_dump(),
             )
-
+            print(f"🎯 [CatService] Event set: {self.event}")
             return result_dto
+
         except Exception as e:
             self._log_error(
                 e, "update_one", error_type="ServerError", details=dto.model_dump()
@@ -129,13 +130,52 @@ class CatService:
                 self.__class__.__name__, "update_one"
             ) from e
 
+    def delete_cat(self, id: int) -> Dict[str, str]:
+        try:
+            # Сначала получим кота, чтобы передать данные в событие
+            cat = self.repository.get_by_id(id)
+            if not cat:
+                raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
+
+            # Удаляем
+            result = self.repository.delete(id)
+            if not result:
+                raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
+
+            # ✅ Устанавливаем событие ДО вызова хэндлера
+            self.event = CatDeletedEvent(cat_id=id)
+
+            app_logger.info(
+                logger_class=self.__class__.__name__,
+                event="CatDeleted",
+                message=f"Кошка удалена с id={id}",
+                summary="Кошка успешно удалена",
+                params={"id": id},
+            )
+            print(f"🎯 [CatService] Event set: {self.event}")
+            return {"result": "deleted"}
+
+        except NotFoundError as e:
+            self._log_error(
+                e, "delete_cat", error_type="NotFoundError", details={"id": id}
+            )
+            raise
+        except Exception as e:
+            self._log_error(
+                e,
+                "delete_cat",
+                error_type="ServerError",
+                details={"id": id, "exception": str(e)},
+            )
+            raise AppError(f"Ошибка удаления кошки с id={id}: {e}").set_context(
+                self.__class__.__name__, "delete_cat"
+            ) from e
+
     def get_all(self) -> List[CatDTO]:
         try:
             cats = self.repository.get_all()
             if not cats:
-                raise NotFoundError(
-                    "Список кошек пуст", details={"method": "get_all"}
-                ).set_context(self.__class__.__name__, "get_all")
+                raise NotFoundError("Список кошек пуст", details={"method": "get_all"})
             return [CatDTO.model_validate(cat) for cat in cats]
         except ConnectionRefusedError as e:
             self._log_error(
@@ -155,38 +195,6 @@ class CatService:
                 self.__class__.__name__, "get_all"
             ) from e
 
-    def delete_cat(self, id: int) -> Dict[str, str]:
-        try:
-            result = self.repository.delete(id)
-            if not result:
-                raise NotFoundError(
-                    f"Кошка с id={id} не найдена", details={"id": id}
-                ).set_context(self.__class__.__name__, "delete_cat")
-            app_logger.info(
-                logger_class=self.__class__.__name__,
-                event="CatDeleted",
-                message=f"Кошка удалена с id={id}",
-                summary="Кошка успешно удалена",
-                params={"id": id},
-            )
-
-            return {"result": "deleted"}
-        except NotFoundError as e:
-            self._log_error(
-                e, "delete_cat", error_type="NotFoundError", details={"id": id}
-            )
-            raise
-        except Exception as e:
-            self._log_error(
-                e,
-                "delete_cat",
-                error_type="ServerError",
-                details={"id": id, "exception": str(e)},
-            )
-            raise AppError(f"Ошибка удаления кошки с id={id}: {e}").set_context(
-                self.__class__.__name__, "delete_cat"
-            ) from e
-
     def add_breed(self, breed_dto: BreedDTO) -> BreedDTO:
         try:
             return self.repository.add_breed(breed_dto)
@@ -204,7 +212,7 @@ class CatService:
             if not breeds:
                 raise NotFoundError(
                     "Список пород пуст", details={"method": "breed_list"}
-                ).set_context(self.__class__.__name__, "breed_list")
+                )
             return [BreedDTO.model_validate(breed) for breed in breeds]
         except Exception as e:
             self._log_error(

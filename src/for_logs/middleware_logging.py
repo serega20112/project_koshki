@@ -10,6 +10,7 @@ app_logger = setup_logger()
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     """Миддлвэйр для логирования действий юзера в фастапи"""
+
     async def dispatch(self, request: Request, call_next):
         app_logger.info(
             logger_class="LoggingMiddleware",

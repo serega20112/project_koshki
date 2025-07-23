@@ -8,6 +8,7 @@ from src.infrastructure.rabbit_and_celery.message_broker.rabbitmq_pusher import 
 def send_event_to_rabbit(event_dict, routing_key):
     publisher = RabbitMQPublisher()
     try:
-        publisher.publish(event_dict, routing_key)
+        publisher.connect()
+        publisher.publish_dict(event_dict, routing_key)
     finally:
         publisher.disconnect()

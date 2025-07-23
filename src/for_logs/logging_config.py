@@ -108,6 +108,27 @@ class AppLogger:
         )
         self.logger.info(entry)
 
+    def error(
+        self,
+        logger_class,
+        event,
+        message,
+        params=None,
+        summary=None,
+        ErrClass=None,
+        ErrMethod=None,
+    ):
+        entry = self._make_log_entry(
+            "ERROR",
+            logger_class,
+            event,
+            message,
+            params=params,
+            summary=summary,
+            ErrClass=ErrClass,
+            ErrMethod=ErrMethod,
+        )
+
     def warning(
         self,
         logger_class,

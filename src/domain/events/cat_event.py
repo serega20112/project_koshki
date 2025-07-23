@@ -67,12 +67,9 @@ class CatUpdatedEvent:
 @dataclass
 class CatDeletedEvent:
     cat_id: int
-    deleted_at: datetime
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "event_type": "cat.deleted",
             "cat_id": self.cat_id,
-            "deleted_at": self.deleted_at.isoformat(),
-            "timestamp": datetime.utcnow().isoformat(),
         }

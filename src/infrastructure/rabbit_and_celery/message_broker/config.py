@@ -8,7 +8,7 @@ class RabbitMQSettings(BaseSettings):
     password: str = "guest"
     exchange_name: str = "cats_event"
     queue_name: str = "cat_queue"
-    routing_key: str = "cat.*"
+    routing_key: str = "cat.created"
 
     class Config:
         env_prefix = "RABBITMQ_"

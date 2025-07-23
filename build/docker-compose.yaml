@@ -9,8 +9,8 @@ services:
       - "15672:15672"  # Management UI
       - "5672:5672"    # AMQP protocol
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
   # Elasticsearch
   elastic-local:
