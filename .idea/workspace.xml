@@ -4,22 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="IB-1, многое сделал">
-      <change afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/handler/rac_handler.py" afterDir="false" />
+    <list default="true" id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="IB-1, обновил список библиотек, исправил ридми">
+      <change afterPath="$PROJECT_DIR$/src/interface/create_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/build/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/services/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/services/services.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/consumer/consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/consumer/consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dependencies/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dependencies/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/events/cat_event.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/events/cat_event.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/for_logs/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/logging_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/for_logs/middleware_logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/middleware_logging.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/database/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/database/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/rabbitmq_pusher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/rabbitmq_pusher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/tasks/event_tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/tasks/event_tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/handler/rac_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/handler/rac_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/init_rac.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/init_rac.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/scheduler/scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/scheduler/scheduler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/interface/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/test/create_cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/test/create_cat.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,27 +55,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.build/docker-compose.yaml.cats_rabbitmq: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.build/docker-compose.yaml: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;FastAPI.server.executor&quot;: &quot;Run&quot;,
-    &quot;Python.config.executor&quot;: &quot;Run&quot;,
-    &quot;Python.create_cat.executor&quot;: &quot;Run&quot;,
-    &quot;Python.log-gen.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/project_koshki/docs&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.build/docker-compose.yaml.cats_rabbitmq: Compose Deployment.executor": "Run",
+    "Docker.build/docker-compose.yaml: Compose Deployment.executor": "Run",
+    "FastAPI.app.executor": "Run",
+    "FastAPI.server.executor": "Run",
+    "Python.config.executor": "Run",
+    "Python.create_cat.executor": "Run",
+    "Python.log-gen.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Admin/project_koshki/docs",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Admin\project_koshki\docs" />
@@ -93,8 +88,8 @@
       <recent name="C:\Users\Admin\project_koshki\for_logs" />
     </key>
   </component>
-  <component name="RunManager" selected="FastAPI.server">
-    <configuration name="server" type="Python.FastAPI">
+  <component name="RunManager" selected="FastAPI.app">
+    <configuration name="app" type="Python.FastAPI">
       <option name="additionalOptions" value="--host 0.0.0.0 --port 8000 --workers 4 --limit-concurrency 500 --log-level info --reload " />
       <option name="file" value="C:\Users\Admin\project_koshki\src\interface\main.py" />
       <module name="project_koshki" />
@@ -141,7 +136,7 @@
     <list>
       <item itemvalue="Docker.build/docker-compose.yaml.cats_rabbitmq: Compose Deployment" />
       <item itemvalue="Docker.build/docker-compose.yaml: Compose Deployment" />
-      <item itemvalue="FastAPI.server" />
+      <item itemvalue="FastAPI.app" />
     </list>
     <recent_temporary>
       <list>
@@ -179,7 +174,9 @@
       <workItem from="1753253843954" duration="6385000" />
       <workItem from="1753266097026" duration="296000" />
       <workItem from="1753267213403" duration="5921000" />
-      <workItem from="1753273656448" duration="772000" />
+      <workItem from="1753273656448" duration="1241000" />
+      <workItem from="1753340662770" duration="5206000" />
+      <workItem from="1753353193046" duration="3633000" />
     </task>
     <task id="LOCAL-00001" summary="IB-1, Добавил логирование, в процессе переделать под кибанну и еластиксерч">
       <option name="closed" value="true" />
@@ -261,7 +258,39 @@
       <option name="project" value="LOCAL" />
       <updated>1753188573052</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="IB-1, многое сделал, вроде выдерживает 10к запросов в секунду">
+      <option name="closed" value="true" />
+      <created>1753274494315</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1753274494315</updated>
+    </task>
+    <task id="LOCAL-00012" summary="IB-1, закомментировал хранение работ в базе данных">
+      <option name="closed" value="true" />
+      <created>1753353417327</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1753353417327</updated>
+    </task>
+    <task id="LOCAL-00013" summary="IB-1, сделал вывод более гибким">
+      <option name="closed" value="true" />
+      <created>1753353544221</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1753353544221</updated>
+    </task>
+    <task id="LOCAL-00014" summary="IB-1, обновил список библиотек, исправил ридми">
+      <option name="closed" value="true" />
+      <created>1753353963477</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1753353963477</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,12 +318,16 @@
     <MESSAGE value="IB-1, добавил RabbitMQ, вроде работает, но пока что не очень, буду обновлять" />
     <MESSAGE value="IB-1, убрал лишние зависимости" />
     <MESSAGE value="IB-1, многое сделал" />
-    <option name="LAST_COMMIT_MESSAGE" value="IB-1, многое сделал" />
+    <MESSAGE value="IB-1, многое сделал, вроде выдерживает 10к запросов в секунду" />
+    <MESSAGE value="IB-1, закомментировал хранение работ в базе данных" />
+    <MESSAGE value="IB-1, сделал вывод более гибким" />
+    <MESSAGE value="IB-1, обновил список библиотек, исправил ридми" />
+    <option name="LAST_COMMIT_MESSAGE" value="IB-1, обновил список библиотек, исправил ридми" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1753274373020" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
+    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1753341734243" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
     <SUITE FILE_PATH="coverage/project_koshki$test.coverage" NAME="test Coverage Results" MODIFIED="1751280448302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/project_koshki$server.coverage" NAME="server Coverage Results" MODIFIED="1753274431163" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/project_koshki$server.coverage" NAME="app Coverage Results" MODIFIED="1753356800940" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/project_koshki$consumer.coverage" NAME="consumer Coverage Results" MODIFIED="1753100264359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/consumer" />
     <SUITE FILE_PATH="coverage/project_koshki$log_gen.coverage" NAME="log-gen Coverage Results" MODIFIED="1751027384786" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/project_koshki$config.coverage" NAME="config Coverage Results" MODIFIED="1753256255151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker" />

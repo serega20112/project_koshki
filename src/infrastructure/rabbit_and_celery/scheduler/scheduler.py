@@ -1,5 +1,4 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor
 
 # Храним задачи в БД — чтобы не терялись при перезапуске

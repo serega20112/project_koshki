@@ -11,7 +11,6 @@ def initialization():
     repository = AbstractCatRepository
     service = CatService(repository)
     service.event_publisher = RabbitMQPublisher
-
     if service:
         return (
             f"Initialization successful repo = {repository} \n",
