@@ -3,12 +3,11 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor
 
 # Храним задачи в БД — чтобы не терялись при перезапуске
-jobstores = {"default": SQLAlchemyJobStore(url="sqlite:///jobs.sqlite")}
+# jobstores = {"default": SQLAlchemyJobStore(url="sqlite:///jobs.db")} пока что уберу
 
 executors = {"default": ThreadPoolExecutor(5)}
 
 scheduler = AsyncIOScheduler(
-    jobstores=jobstores,
     executors=executors,
     timezone="UTC",
 )
