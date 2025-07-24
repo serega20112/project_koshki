@@ -21,7 +21,8 @@ async def event_handler_middleware(request: Request, call_next):
             event = service.event
 
             try:
-                run_date = datetime.now(scheduler.timezone) + timedelta(seconds=5)
+                seconds = 5
+                run_date = datetime.now(scheduler.timezone) + timedelta(seconds=seconds)
 
                 # Генерируем уникальный ID задачи, чтобы избежать дублей
                 job_id = f"cat_event_{hash(str(event)) % 1000000}_{int(datetime.now().timestamp())}"
@@ -32,10 +33,10 @@ async def event_handler_middleware(request: Request, call_next):
                     run_date=run_date,
                     args=[event],
                     id=job_id,
-                    replace_existing=True,  # Заменить, если такая задача уже запланирована
+                    replace_existing=True,
                 )
 
-                print(f"🕒 [MIDDLEWARE] Запланирована отправка события через 5 сек: {event}")
+                print(f"🕒 [MIDDLEWARE] Запланирована отправка события через {seconds} сек: {event}")
                 service.event = None
 
             except Exception as e:
