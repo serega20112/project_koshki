@@ -77,8 +77,6 @@ class CatService:
 
             created_cat = self.repository.create(dto)
             result_dto = CatDTO.model_validate(created_cat)
-
-            # ✅ Устанавливаем событие
             self.event = CatCreatedEvent.from_dto(result_dto)
 
             app_logger.info(
@@ -108,8 +106,6 @@ class CatService:
         try:
             updated_cat = self.repository.update(dto)
             result_dto = CatDTO.model_validate(updated_cat)
-
-            # ✅ Устанавливаем событие
             self.event = CatUpdatedEvent.from_dto(updated_cat)
 
             app_logger.info(
@@ -132,17 +128,13 @@ class CatService:
 
     def delete_cat(self, id: int) -> Dict[str, str]:
         try:
-            # Сначала получим кота, чтобы передать данные в событие
             cat = self.repository.get_by_id(id)
             if not cat:
                 raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
-
-            # Удаляем
             result = self.repository.delete(id)
             if not result:
                 raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
 
-            # ✅ Устанавливаем событие ДО вызова хэндлера
             self.event = CatDeletedEvent(cat_id=id)
 
             app_logger.info(

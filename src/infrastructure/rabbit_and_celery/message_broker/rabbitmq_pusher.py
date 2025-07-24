@@ -37,7 +37,7 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 exchange=self.exchange,
                 exchange_type="topic",
                 durable=True,
-                passive=False,  # важно — создать, если нет
+                passive=False,  # важно создать, если нет
             )
             print(f"[✓] Exchange '{self.exchange}' создан (или уже существует)")
 

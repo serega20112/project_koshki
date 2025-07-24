@@ -1,3 +1,5 @@
+from celery.worker.consumer.mingle import exception
+
 from src.application.services.services import CatService
 from src.domain.repositories.repository import AbstractCatRepository
 from src.infrastructure.rabbit_and_celery.message_broker.rabbitmq_pusher import (
@@ -12,8 +14,9 @@ def initialization():
 
     if service:
         return (
-            service,
-            f"Initialization successful repo = {repository}, service = {service}, event+pub = {service.event_publisher}",
+            f"Initialization successful repo = {repository} \n",
+            f"service = {service} \n",
+            f"event+pub = {service.event_publisher} \n",
         )
     else:
         print("error")

@@ -8,7 +8,7 @@ from src.infrastructure.rabbit_and_celery.handler.rac_handler import (
     event_handler_middleware,
 )
 from src.infrastructure.rabbit_and_celery.init_rac import initialization
-from src.infrastructure.rabbit_and_celery.tasks.event_tasks import send_event_to_rabbit
+from src.infrastructure.rabbit_and_celery.scheduler.scheduler import start_scheduler
 from src.infrastructure.rabbit_and_celery.utils.register_events import register_events
 
 consumer = RabbitConsumer()
@@ -19,7 +19,13 @@ app.add_middleware(LoggingMiddleware)
 app.middleware("http")(event_handler_middleware)
 initialization()
 register_events(app, consumer)
+start_scheduler()
+
 
 Base.metadata.create_all(bind=engine)
 
-print(f"Done.\n" "Logs are recording \n" f"{consumer, app, initialization()}")
+print(
+    f"Done.\n" "Logs are recording \n" f"{consumer} \n",
+    f"{app} \n",
+    f"{initialization()} \n",
+)

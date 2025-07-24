@@ -9,7 +9,7 @@ if sys.platform == "win32":
 
 BASE_URL = "http://localhost:8000"
 CONCURRENT_PROCESSES = cpu_count()
-REQUESTS_PER_BATCH = 500  # на 1 цикл, меняй для большей агрессии
+REQUESTS_PER_BATCH = 50  # на 1 цикл, меняй для большей агрессии
 SLEEP_BETWEEN_BATCHES = 0  # сек, для нон-стопа ставим 0
 
 new_cat_data = {
@@ -37,12 +37,16 @@ async def fire(session):
         tasks.append(session.post(f"{BASE_URL}/cats", json=new_cat_data))
         tasks.append(session.put(f"{BASE_URL}/cats/1", json=update_cat_data))
     responses = await asyncio.gather(*tasks, return_exceptions=True)
-    ok = sum(1 for r in responses if isinstance(r, aiohttp.ClientResponse) and r.status == 200)
+    ok = sum(
+        1
+        for r in responses
+        if isinstance(r, aiohttp.ClientResponse) and r.status == 200
+    )
     print(f"Batch: {ok}/{len(tasks)} OK")
 
 
 async def worker_loop():
-    connector = aiohttp.TCPConnector(limit=500, force_close=False)
+    connector = aiohttp.TCPConnector(limit=5, force_close=False)
     timeout = aiohttp.ClientTimeout(total=10)
     async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
         while True:

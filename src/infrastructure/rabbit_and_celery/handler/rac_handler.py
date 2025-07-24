@@ -1,13 +1,19 @@
 from fastapi import Request
-from src.infrastructure.rabbit_and_celery.message_broker.rabbitmq_pusher import (
-    RabbitMQPublisher,
-)
+from starlette.responses import Response
+from datetime import datetime, timedelta
+from src.infrastructure.rabbit_and_celery.scheduler.scheduler import scheduler
 
-publisher = RabbitMQPublisher()
-
+def publish_cat_event(event_data: dict):
+    try:
+        from src.infrastructure.rabbit_and_celery.message_broker.rabbitmq_pusher import RabbitMQPublisher
+        publisher = RabbitMQPublisher()
+        publisher.publish(event_data, routing_key="cat.created")
+        print(f"✅ [SCHEDULED] Событие отправлено: {event_data}")
+    except Exception as e:
+        print(f"❌ [SCHEDULED] Ошибка при отправке события: {e}")
 
 async def event_handler_middleware(request: Request, call_next):
-    response = await call_next(request)
+    response: Response = await call_next(request)
 
     if hasattr(request.state, "cat_service"):
         service = request.state.cat_service
@@ -15,14 +21,24 @@ async def event_handler_middleware(request: Request, call_next):
             event = service.event
 
             try:
-                # Публикуем через глобальный publisher
-                publisher.publish(event, routing_key="cat.created")
-                print(f"✅ [MIDDLEWARE] Событие отправлено: {event}")
+                run_date = datetime.now(scheduler.timezone) + timedelta(seconds=5)
 
-                # Очищаем
+                # Генерируем уникальный ID задачи, чтобы избежать дублей
+                job_id = f"cat_event_{hash(str(event)) % 1000000}_{int(datetime.now().timestamp())}"
+
+                scheduler.add_job(
+                    func=publish_cat_event,
+                    trigger='date',
+                    run_date=run_date,
+                    args=[event],
+                    id=job_id,
+                    replace_existing=True,  # Заменить, если такая задача уже запланирована
+                )
+
+                print(f"🕒 [MIDDLEWARE] Запланирована отправка события через 5 сек: {event}")
                 service.event = None
 
             except Exception as e:
-                print(f"❌ [MIDDLEWARE] Ошибка публикации: {e}")
+                print(f"❌ [MIDDLEWARE] Ошибка при планировании события: {e}")
 
     return response

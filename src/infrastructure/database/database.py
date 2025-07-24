@@ -7,12 +7,13 @@ engine = create_engine(
     "sqlite:///./animal.db",
     connect_args={
         "check_same_thread": False,  # разрешаем доступ из разных потоков
+        "timeout": 20,  # время ожидания разблокировки БД (в секундах)
     },
-    pool_size=30,
-    max_overflow=60,
-    pool_timeout=5,
-    pool_recycle=300,
+    pool_size=500,
+    max_overflow=500,
+    pool_timeout=1,
     pool_pre_ping=True,
+    pool_recycle=20,
     echo=False,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
