@@ -3,21 +3,25 @@ import threading
 import pika
 import json
 from datetime import datetime, timedelta, timezone
-from typing import Dict
 
 from src.domain.events.cat_event import CatCreatedEvent
 from src.for_logs.logging_config import setup_logger
 from src.infrastructure.rabbit_and_celery.scheduler.scheduler import scheduler
-from src.infrastructure.rabbit_and_celery.message_broker.config import rabbitmq_settings  # Импортируем настройки
+from src.infrastructure.rabbit_and_celery.message_broker.config import (
+    rabbitmq_settings,
+)
 
 logger = setup_logger()
+
 
 def handle_cat_created_event(event_data):
     """Выполняется через 2 секунды"""
     try:
         cat_name = event_data["name"]
         cat_id = event_data["cat_id"]
-        print(f"[Консюмер] Показываю кота: '{cat_name}' (ID={cat_id})! Прошло 2 секунды ")
+        print(
+            f"[Консюмер] Показываю кота: '{cat_name}' (ID={cat_id})! Прошло 2 секунды "
+        )
     except Exception as e:
         print(f"[Консюмер] Ошибка в отложенной обработке: {e}")
 
@@ -49,15 +53,12 @@ def callback(ch, method, properties, body):
                 replace_existing=True,
             )
 
-            print(f"[Консюмер] Запланирован показ кота '{cat_event.name}' через 2 секунды...")
-
+            print(f"⏳ [Консюмер] Запланирован показ кота '{cat_event.name}' через 2 секунды...")
         else:
-            print(f"[Консюмер] Неизвестный тип события: {event_type}")
-
-        ch.basic_ack(delivery_tag=method.delivery_tag)
+            print(f"❓ [Консюмер] Неизвестный тип события: {event_type}")
 
     except Exception as e:
-        print(f"[Консюмер] Ошибка при обработке: {e}")
+        print(f"❌ [Консюмер] Ошибка при обработке: {e}")
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 
@@ -106,8 +107,10 @@ class RabbitConsumer:
                 on_message_callback=callback,
             )
 
-            print(f"[Консюмер] Запущен: слушает exchange='{self.settings.exchange_name}', "
-                  f"queue='{self.settings.queue_name}', routing_key='{self.settings.routing_key}'")
+            print(
+                f"[Консюмер] Запущен: слушает exchange='{self.settings.exchange_name}', "
+                f"queue='{self.settings.queue_name}', routing_key='{self.settings.routing_key}'"
+            )
 
             logger.info(
                 logger_class="CatConsumer",
