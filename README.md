@@ -1,3 +1,3 @@
-- [Как работать с проектом](./docs/how_to_work_with_project) 
-- [Как работать с RabbitMQ](./docs/how_to_work_with_rabbit) 
-- [База знаний для RabbitMQ](./docs/RabbitMQ_Knowledge_Base) 
+- [Как работать с проектом](./docs/how_to_work_with_project.md) 
+- [Как работать с RabbitMQ](./docs/how_to_work_with_rabbit.md) 
+- [База знаний для RabbitMQ](./docs/RabbitMQ_Knowledge_Base.md) 
