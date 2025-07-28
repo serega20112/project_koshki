@@ -1,9 +1,7 @@
-# src/consumer/consumer.py
 import threading
 import pika
 import json
 from datetime import datetime, timedelta, timezone
-
 from src.domain.events.cat_event import CatCreatedEvent
 from src.for_logs.logging_config import setup_logger
 from src.infrastructure.rabbit_and_celery.scheduler.scheduler import scheduler
@@ -15,20 +13,29 @@ logger = setup_logger()
 
 
 def handle_cat_created_event(event_data):
-    """Выполняется через 2 секунды"""
+    """Показывает созданного кота, который был в очереди"""
     try:
         cat_name = event_data["name"]
         cat_id = event_data["cat_id"]
+        age = event_data["age"]
+        color = event_data["color"]
+        breed = event_data["breed"]
+        breed_id = event_data["breed_id"]
         print(
-            f"[Консюмер] Показываю кота: '{cat_name}' (ID={cat_id})! Прошло 2 секунды "
+            f"[Consumer] Показываю кота: '{cat_name}'\n"
+            f" ID={cat_id}\n"
+            f"age = {age}\n"
+            f"color = {color}\n"
+            f"breed = {breed}\n"
+            f"breed_id = {breed_id}"
         )
     except Exception as e:
-        print(f"[Консюмер] Ошибка в отложенной обработке: {e}")
+        print(f"[Consumer] Ошибка в отложенной обработке: {e}")
 
 
 def callback(ch, method, properties, body):
     try:
-        print(f"🔍 [Консюмер] Вижу новое сообщение! Обработка началась...")
+        print("🔍 [Consumer] Вижу новое сообщение! Обработка началась...")
 
         event_data = json.loads(body)
         event_type = event_data.get("event_type")
@@ -38,8 +45,12 @@ def callback(ch, method, properties, body):
                 cat_id=event_data["cat_id"],
                 name=event_data["name"],
                 age=event_data["age"],
+                breed=event_data["breed"],
                 breed_id=event_data["breed_id"],
-                created_at=datetime.fromisoformat(event_data["created_at"].replace("Z", "+00:00"))
+                color=event_data["color"],
+                created_at=datetime.fromisoformat(
+                    event_data["created_at"].replace("Z", "+00:00")
+                ),
             )
 
             job_id = f"cat_created_delay_{cat_event.cat_id}"
@@ -53,12 +64,14 @@ def callback(ch, method, properties, body):
                 replace_existing=True,
             )
 
-            print(f"⏳ [Консюмер] Запланирован показ кота '{cat_event.name}' через 2 секунды...")
+            print(
+                f"[Consumer] Запланирован показ кота '{cat_event.name}' через 2 секунды..."
+            )
         else:
-            print(f"❓ [Консюмер] Неизвестный тип события: {event_type}")
+            print(f"[Consumer] Неизвестный тип события: {event_type}")
 
     except Exception as e:
-        print(f"❌ [Консюмер] Ошибка при обработке: {e}")
+        print(f"[Consumer] Ошибка при обработке: {e}")
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 
@@ -68,7 +81,7 @@ class RabbitConsumer:
         self._connection = None
         self._channel = None
         self._stopping = False
-        self.settings = rabbitmq_settings  # 🎯 Используем общие настройки
+        self.settings = rabbitmq_settings
 
     def _consume(self):
         try:
@@ -108,7 +121,7 @@ class RabbitConsumer:
             )
 
             print(
-                f"[Консюмер] Запущен: слушает exchange='{self.settings.exchange_name}', "
+                f"[Consumer] Запущен: слушает exchange='{self.settings.exchange_name}', "
                 f"queue='{self.settings.queue_name}', routing_key='{self.settings.routing_key}'"
             )
 
@@ -128,7 +141,7 @@ class RabbitConsumer:
                 self._connection.process_data_events(time_limit=1)
 
         except Exception as e:
-            print(f"[Консюмер] Ошибка в цикле потребления: {e}")
+            print(f"[Consumer] Ошибка в цикле потребления: {e}")
             logger.error(
                 logger_class="CatConsumer",
                 event="ConsumerError",
@@ -142,7 +155,7 @@ class RabbitConsumer:
             self._stopping = False
             self._thread = threading.Thread(target=self._consume, daemon=True)
             self._thread.start()
-            print("[Консюмер] Поток запущен")
+            print("[Consumer] Поток запущен")
 
     async def stop(self):
         self._stopping = True
@@ -150,4 +163,4 @@ class RabbitConsumer:
             self._connection.close()
         if self._thread and self._thread.is_alive():
             self._thread.join(timeout=5)
-        print("[Консюмер] Остановлен")
+        print("[Consumer] Остановлен")

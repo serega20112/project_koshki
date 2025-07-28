@@ -28,7 +28,7 @@ consumer.start()
 
 
 print(
-    f"Done.\n" "Logs are recording \n" f"{consumer} \n",
+    f"Done.\nLogs are recording \n{consumer} \n",
     f"{app} \n",
     f"{initialization()} \n",
     f"{consumer} \n",

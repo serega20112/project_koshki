@@ -9,6 +9,8 @@ class CatCreatedEvent:
     cat_id: int
     name: str
     age: int
+    color: Optional[str]
+    breed: str
     breed_id: Optional[int]
     created_at: datetime
 
@@ -18,7 +20,9 @@ class CatCreatedEvent:
             cat_id=cat_dto.id,
             name=cat_dto.name,
             age=cat_dto.age,
+            breed=cat_dto.breed,
             breed_id=cat_dto.breed_id,
+            color=cat_dto.color,
             created_at=datetime.utcnow(),
         )
 
@@ -28,6 +32,8 @@ class CatCreatedEvent:
             "cat_id": self.cat_id,
             "name": self.name,
             "age": self.age,
+            "color": self.color,
+            "breed": self.breed,
             "breed_id": self.breed_id,
             "created_at": self.created_at.isoformat(),
             "timestamp": datetime.utcnow().isoformat(),
@@ -39,6 +45,7 @@ class CatUpdatedEvent:
     cat_id: int
     name: str
     age: int
+    color: str
     breed_id: Optional[int]
     updated_at: datetime
 

@@ -31,13 +31,11 @@ class RabbitMQPublisher(AbstractEventPublisher):
             )
             self.connection = pika.BlockingConnection(parameters)
             self.channel = self.connection.channel()
-
-            # Явно создаём exchange
             self.channel.exchange_declare(
                 exchange=self.exchange,
                 exchange_type="topic",
                 durable=True,
-                passive=False,  # важно создать, если нет
+                passive=False,
             )
             print(f"[✓] Exchange '{self.exchange}' создан (или уже существует)")
 

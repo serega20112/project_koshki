@@ -2,7 +2,6 @@ from functools import wraps
 from fastapi import HTTPException
 
 from src.application.exceptions.exceptions import (
-    AppError,
     NotFoundError,
     ValidationError,
     DatabaseError,

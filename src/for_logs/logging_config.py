@@ -118,7 +118,7 @@ class AppLogger:
         ErrClass=None,
         ErrMethod=None,
     ):
-        entry = self._make_log_entry(
+        self._make_log_entry(
             "ERROR",
             logger_class,
             event,

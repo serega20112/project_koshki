@@ -1,4 +1,6 @@
 class AppError(Exception):
+    """Ошибки при работе приложения(http код 500+)"""
+
     def __init__(self, message: str = "Ошибка в приложении", details: dict = None):
         self.message = message
         self.details = details or {}
@@ -10,9 +12,6 @@ class AppError(Exception):
         self.ErrClass = err_class
         self.ErrMethod = err_method
         return self
-
-    def __str__(self):
-        return f"[{self.__class__.__name__}] {self.message}"
 
     def __str__(self):
         return f"[{self.__class__.__name__}] {self.message}"

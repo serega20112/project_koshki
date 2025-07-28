@@ -1,5 +1,3 @@
-from celery.worker.consumer.mingle import exception
-
 from src.application.services.services import CatService
 from src.domain.repositories.repository import AbstractCatRepository
 from src.infrastructure.rabbit_and_celery.message_broker.rabbitmq_pusher import (
