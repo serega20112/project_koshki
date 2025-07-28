@@ -8,8 +8,8 @@ if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
 BASE_URL = "http://localhost:8000"
-CONCURRENT_PROCESSES = cpu_count()
-REQUESTS_PER_BATCH = 50  # на 1 цикл, меняй для более большого количества запросов
+CONCURRENT_PROCESSES = cpu_count() -2
+REQUESTS_PER_BATCH = 5000 # на 1 цикл, меняй для более большого количества запросов
 SLEEP_BETWEEN_BATCHES = 0  # сек, для нон-стопа ставим 0
 
 new_cat_data = {

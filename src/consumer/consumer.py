@@ -65,7 +65,7 @@ def callback(ch, method, properties, body):
             )
 
             print(
-                f"[Consumer] Запланирован показ кота '{cat_event.name}' через 2 секунды..."
+                f"[Consumer] получил кота {cat_event.name}, обработаю покажу"
             )
         else:
             print(f"[Consumer] Неизвестный тип события: {event_type}")
