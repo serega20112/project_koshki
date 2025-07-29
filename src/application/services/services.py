@@ -53,7 +53,9 @@ class CatService:
         try:
             cat = self.repository.get_by_id(id)
             if not cat:
-                raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
+                raise NotFoundError(
+                    f"Кошка с id={id} не найдена", details={"id": id}
+                )
             return CatDTO.model_validate(cat)
         except NotFoundError as e:
             self._log_error(
@@ -62,7 +64,10 @@ class CatService:
             raise
         except Exception as e:
             self._log_error(
-                e, "get_one", error_type="ServerError", details={"exception": str(e)}
+                e,
+                "get_one",
+                error_type="ServerError",
+                details={"exception": str(e)},
             )
             raise AppError(
                 f"Ошибка в сервисе {self.__class__.__name__}, метод: get_one — {e}"
@@ -72,7 +77,8 @@ class CatService:
         try:
             if dto.age <= 0:
                 raise ValidationError(
-                    "Возраст должен быть положительным числом", details=dto.model_dump()
+                    "Возраст должен быть положительным числом",
+                    details=dto.model_dump(),
                 )
 
             created_cat = self.repository.create(dto)
@@ -96,7 +102,10 @@ class CatService:
             raise
         except Exception as e:
             self._log_error(
-                e, "reg_new", error_type="ServerError", details=dto.model_dump()
+                e,
+                "reg_new",
+                error_type="ServerError",
+                details=dto.model_dump(),
             )
             raise AppError(f"Ошибка регистрации кошки: {e}").set_context(
                 self.__class__.__name__, "reg_new"
@@ -120,7 +129,10 @@ class CatService:
 
         except Exception as e:
             self._log_error(
-                e, "update_one", error_type="ServerError", details=dto.model_dump()
+                e,
+                "update_one",
+                error_type="ServerError",
+                details=dto.model_dump(),
             )
             raise AppError(f"Ошибка обновления кошки: {e}").set_context(
                 self.__class__.__name__, "update_one"
@@ -130,10 +142,14 @@ class CatService:
         try:
             cat = self.repository.get_by_id(id)
             if not cat:
-                raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
+                raise NotFoundError(
+                    f"Кошка с id={id} не найдена", details={"id": id}
+                )
             result = self.repository.delete(id)
             if not result:
-                raise NotFoundError(f"Кошка с id={id} не найдена", details={"id": id})
+                raise NotFoundError(
+                    f"Кошка с id={id} не найдена", details={"id": id}
+                )
 
             self.event = CatDeletedEvent(cat_id=id)
 
@@ -159,15 +175,17 @@ class CatService:
                 error_type="ServerError",
                 details={"id": id, "exception": str(e)},
             )
-            raise AppError(f"Ошибка удаления кошки с id={id}: {e}").set_context(
-                self.__class__.__name__, "delete_cat"
-            ) from e
+            raise AppError(
+                f"Ошибка удаления кошки с id={id}: {e}"
+            ).set_context(self.__class__.__name__, "delete_cat") from e
 
     def get_all(self) -> List[CatDTO]:
         try:
             cats = self.repository.get_all()
             if not cats:
-                raise NotFoundError("Список кошек пуст", details={"method": "get_all"})
+                raise NotFoundError(
+                    "Список кошек пуст", details={"method": "get_all"}
+                )
             return [CatDTO.model_validate(cat) for cat in cats]
         except ConnectionRefusedError as e:
             self._log_error(
@@ -181,18 +199,24 @@ class CatService:
             ).set_context(self.__class__.__name__, "get_all") from e
         except Exception as e:
             self._log_error(
-                e, "get_all", error_type="ServerError", details={"exception": str(e)}
+                e,
+                "get_all",
+                error_type="ServerError",
+                details={"exception": str(e)},
             )
-            raise AppError(f"Неизвестная ошибка в методе get_all: {e}").set_context(
-                self.__class__.__name__, "get_all"
-            ) from e
+            raise AppError(
+                f"Неизвестная ошибка в методе get_all: {e}"
+            ).set_context(self.__class__.__name__, "get_all") from e
 
     def add_breed(self, breed_dto: BreedDTO) -> BreedDTO:
         try:
             return self.repository.add_breed(breed_dto)
         except Exception as e:
             self._log_error(
-                e, "add_breed", error_type="ServerError", details=breed_dto.model_dump()
+                e,
+                "add_breed",
+                error_type="ServerError",
+                details=breed_dto.model_dump(),
             )
             raise AppError(f"Ошибка добавления породы: {e}").set_context(
                 self.__class__.__name__, "add_breed"
@@ -208,7 +232,10 @@ class CatService:
             return [BreedDTO.model_validate(breed) for breed in breeds]
         except Exception as e:
             self._log_error(
-                e, "breed_list", error_type="ServerError", details={"exception": str(e)}
+                e,
+                "breed_list",
+                error_type="ServerError",
+                details={"exception": str(e)},
             )
             raise AppError(f"Ошибка получения списка пород: {e}").set_context(
                 self.__class__.__name__, "breed_list"

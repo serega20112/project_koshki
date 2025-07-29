@@ -9,7 +9,9 @@ if sys.platform == "win32":
 
 BASE_URL = "http://localhost:8000"
 CONCURRENT_PROCESSES = cpu_count() - 2
-REQUESTS_PER_BATCH = 5000  # на 1 цикл, меняй для более большого количества запросов
+REQUESTS_PER_BATCH = (
+    5000  # на 1 цикл, меняй для более большого количества запросов
+)
 SLEEP_BETWEEN_BATCHES = 0  # сек, для нон-стопа ставим 0
 
 new_cat_data = {
@@ -48,7 +50,9 @@ async def fire(session):
 async def worker_loop():
     connector = aiohttp.TCPConnector(limit=5, force_close=False)
     timeout = aiohttp.ClientTimeout(total=10)
-    async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
+    async with aiohttp.ClientSession(
+        connector=connector, timeout=timeout
+    ) as session:
         while True:
             await fire(session)
             if SLEEP_BETWEEN_BATCHES:

@@ -15,7 +15,9 @@ def log_service(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         service = kwargs.get("service") or args[0] if len(args) > 0 else None
-        service_name = service.__class__.__name__ if service else "UnknownService"
+        service_name = (
+            service.__class__.__name__ if service else "UnknownService"
+        )
 
         app_logger.info(
             logger_class="Route",
@@ -77,7 +79,8 @@ def log_service(func):
                 )
             else:
                 raise HTTPException(
-                    status_code=500, detail={"error": "ServerError", "message": str(e)}
+                    status_code=500,
+                    detail={"error": "ServerError", "message": str(e)},
                 )
 
     return wrapper

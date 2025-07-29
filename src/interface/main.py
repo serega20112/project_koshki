@@ -8,8 +8,12 @@ from src.infrastructure.rabbit_and_celery.handler.rac_handler import (
     event_handler_middleware,
 )
 from src.infrastructure.rabbit_and_celery.init_rac import initialization
-from src.infrastructure.rabbit_and_celery.scheduler.scheduler import start_scheduler
-from src.infrastructure.rabbit_and_celery.utils.register_events import register_events
+from src.infrastructure.rabbit_and_celery.scheduler.scheduler import (
+    start_scheduler,
+)
+from src.infrastructure.rabbit_and_celery.utils.register_events import (
+    register_events,
+)
 
 app = FastAPI()
 

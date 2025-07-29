@@ -2,7 +2,9 @@ import json
 import pika
 
 from src.domain.repositories.event_repository import AbstractEventPublisher
-from src.infrastructure.rabbit_and_celery.message_broker.config import rabbitmq_settings
+from src.infrastructure.rabbit_and_celery.message_broker.config import (
+    rabbitmq_settings,
+)
 from src.for_logs.logging_config import setup_logger
 from src.application.exceptions.exceptions import AppError
 import re
@@ -37,7 +39,9 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 durable=True,
                 passive=False,
             )
-            print(f"[✓] Exchange '{self.exchange}' создан (или уже существует)")
+            print(
+                f"[✓] Exchange '{self.exchange}' создан (или уже существует)"
+            )
 
             self.channel.queue_declare(queue=self.queue_name, durable=True)
             print(f"[✓] Queue '{self.queue_name}' создана (или уже есть)")
@@ -47,7 +51,9 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 queue=self.queue_name,
                 routing_key=self.routing_key,
             )
-            print(f"[✓] Queue привязана к exchange по ключу '{self.routing_key}'")
+            print(
+                f"[✓] Queue привязана к exchange по ключу '{self.routing_key}'"
+            )
 
         except pika.exceptions.ChannelClosedByBroker as e:
             print(f"[✗] Ошибка: Channel closed by broker — {e}")
@@ -88,12 +94,18 @@ class RabbitMQPublisher(AbstractEventPublisher):
     def publish(self, event, routing_key):
         routing_key = self._class_name_to_routing_key(event)
 
-        if not self.channel or self.connection is None or self.connection.is_closed:
+        if (
+            not self.channel
+            or self.connection is None
+            or self.connection.is_closed
+        ):
             self.connect()
 
         try:
             if not hasattr(event, "to_dict") or not callable(event.to_dict):
-                raise ValueError(f"Event must have .to_dict(). Got: {type(event)}")
+                raise ValueError(
+                    f"Event must have .to_dict(). Got: {type(event)}"
+                )
 
             payload = event.to_dict()
             message_body = json.dumps(payload, default=str)
@@ -128,7 +140,9 @@ class RabbitMQPublisher(AbstractEventPublisher):
                 message=str(e),
                 summary=f"Failed to publish event: {str(e)}",
                 params={
-                    "event_type": getattr(event, "__class__", type(event).__name__),
+                    "event_type": getattr(
+                        event, "__class__", type(event).__name__
+                    ),
                     "routing_key": routing_key,
                 },
                 ErrClass=self.__class__.__name__,

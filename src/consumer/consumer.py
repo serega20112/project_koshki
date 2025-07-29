@@ -64,7 +64,9 @@ def callback(ch, method, properties, body):
                 replace_existing=True,
             )
 
-            print(f"[Consumer] получил кота {cat_event.name}, обработаю покажу")
+            print(
+                f"[Consumer] получил кота {cat_event.name}, обработаю покажу"
+            )
         else:
             print(f"[Consumer] Неизвестный тип события: {event_type}")
 
