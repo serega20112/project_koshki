@@ -43,9 +43,7 @@ class AppLogger:
 
             console_handler = logging.StreamHandler()
             console_handler.setLevel(logging.INFO)
-            formatter = logging.Formatter(
-                "%(asctime)s [%(levelname)s] %(message)s"
-            )
+            formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
             console_handler.setFormatter(formatter)
             self.logger.addHandler(console_handler)
 
@@ -66,9 +64,7 @@ class AppLogger:
                 outer_frame = frame.f_back.f_back
                 method_name = outer_frame.f_code.co_name
                 self_obj = outer_frame.f_locals.get("self")
-                class_name = (
-                    self_obj.__class__.__name__ if self_obj else logger_class
-                )
+                class_name = self_obj.__class__.__name__ if self_obj else logger_class
             finally:
                 del frame
         else:

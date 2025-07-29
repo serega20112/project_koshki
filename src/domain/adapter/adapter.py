@@ -32,9 +32,7 @@ class CatRepository(AbstractCatRepository):
         return cat_model
 
     def update(self, cat: Cat) -> Cat:
-        cat_model = (
-            self.db.query(CatModel).filter(CatModel.id == cat.id).first()
-        )
+        cat_model = self.db.query(CatModel).filter(CatModel.id == cat.id).first()
         cat_model.name = cat.name
         cat_model.age = cat.age
         cat_model.color = cat.color
@@ -62,10 +60,6 @@ class CatRepository(AbstractCatRepository):
 
     def add_breed(self, breed_dto: BreedDTO) -> BreedDTO:
         existing_breed = (
-            self.db.query(CatModel)
-            .filter(CatModel.breed == breed_dto.breed)
-            .first()
+            self.db.query(CatModel).filter(CatModel.breed == breed_dto.breed).first()
         )
-        return BreedDTO(
-            breed=existing_breed.breed, breed_id=existing_breed.breed_id
-        )
+        return BreedDTO(breed=existing_breed.breed, breed_id=existing_breed.breed_id)

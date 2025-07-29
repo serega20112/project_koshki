@@ -31,9 +31,7 @@ def reg_new(cat_dto: CatDTO, service: CatService = Depends(get_service)):
 
 @router.put("/cats/{id}", response_model=CatDTO)
 @log_service
-def update_cat(
-    id: int, cat_dto: CatDTO, service: CatService = Depends(get_service)
-):
+def update_cat(id: int, cat_dto: CatDTO, service: CatService = Depends(get_service)):
     cat_dto.id = id
     return service.update_one(cat_dto)
 

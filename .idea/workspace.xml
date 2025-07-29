@@ -6,6 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="b275ed06-8d38-4749-a6f9-0f8d34a8b205" name="Changes" comment="IB-1, доработка">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/exceptions/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/exceptions/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/services/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/services/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/consumer/consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/consumer/consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/domain/adapter/adapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/adapter/adapter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/for_logs/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/for_logs/logging_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/api/routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/api/routes/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/rabbitmq_pusher.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker/rabbitmq_pusher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interface/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/interface/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/decorators/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/decorators/decorators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/test/create_cat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/test/create_cat.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -369,12 +379,12 @@
     <option name="LAST_COMMIT_MESSAGE" value="IB-1, доработка" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1753689761537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
+    <SUITE FILE_PATH="coverage/project_koshki$create_cat.coverage" NAME="create_cat Coverage Results" MODIFIED="1753792642387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/utils/test" />
     <SUITE FILE_PATH="coverage/project_koshki$database.coverage" NAME="database Coverage Results" MODIFIED="1753689458206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/infrastructure/database" />
     <SUITE FILE_PATH="coverage/project_koshki$test.coverage" NAME="test Coverage Results" MODIFIED="1751280448302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/project_koshki$server.coverage" NAME="app Coverage Results" MODIFIED="1753358163987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/project_koshki$consumer.coverage" NAME="consumer Coverage Results" MODIFIED="1753100264359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/consumer" />
-    <SUITE FILE_PATH="coverage/project_koshki$app.coverage" NAME="app Coverage Results" MODIFIED="1753704077893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/project_koshki$app.coverage" NAME="app Coverage Results" MODIFIED="1753792380947" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/project_koshki$log_gen.coverage" NAME="log-gen Coverage Results" MODIFIED="1751027384786" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/project_koshki$config.coverage" NAME="config Coverage Results" MODIFIED="1753256255151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/infrastructure/rabbit_and_celery/message_broker" />
   </component>

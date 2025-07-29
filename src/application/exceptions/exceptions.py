@@ -1,9 +1,7 @@
 class AppError(Exception):
     """Ошибки при работе приложения(http код 500+)"""
 
-    def __init__(
-        self, message: str = "Ошибка в приложении", details: dict = None
-    ):
+    def __init__(self, message: str = "Ошибка в приложении", details: dict = None):
         self.message = message
         self.details = details or {}
         self.ErrClass = "UnknownClass"
@@ -22,9 +20,7 @@ class AppError(Exception):
 class DatabaseError(AppError):
     """Ошибка подключения или работы с БД"""
 
-    def __init__(
-        self, message: str = "Ошибка базы данных", details: dict = None
-    ):
+    def __init__(self, message: str = "Ошибка базы данных", details: dict = None):
         super().__init__(message=message, details=details)
 
 
@@ -38,7 +34,5 @@ class NotFoundError(AppError):
 class ValidationError(AppError):
     """Ошибка валидации данных"""
 
-    def __init__(
-        self, message: str = "Ошибка валидации", details: dict = None
-    ):
+    def __init__(self, message: str = "Ошибка валидации", details: dict = None):
         super().__init__(message=message, details=details)

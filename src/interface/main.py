@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.consumer.consumer import RabbitConsumer
+from src.consumer.consumer import Consumer
 from src.infrastructure.database.database import Base, engine
 from src.infrastructure.api.routes.routes import router
 from src.for_logs.middleware_logging import LoggingMiddleware
@@ -23,7 +23,7 @@ app.add_middleware(LoggingMiddleware)
 initialization()
 start_scheduler()
 
-consumer = RabbitConsumer()
+consumer = Consumer()
 
 register_events(app, consumer)
 Base.metadata.create_all(bind=engine)
